@@ -1,11 +1,13 @@
 <?php $pager = $this->pagination()->getPager(); ?>
 <div class="page-header" id="banner">
     <div class="row">
-        <div class="col-lg-8 col-md-7 col-sm-6">
-            <a href="<?php echo $this->getUrl()->getUrl('form'); ?>" class="btn btn-primary" name="update">Add Admin
-                <i class="fa fa-plus"></i>
-            </a>
-        </div>
+        <?php foreach ($this->getButtons() as $key => $button) : ?>
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <a href="<?php echo $this->getButtonUrl($button['method']) ?>" class="btn btn-primary" name="update">Add Admin
+                    <i class="<?php echo $button['icon']; ?>"></i>
+                </a>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
 
@@ -16,22 +18,43 @@
                 <h4 class="card-title"><?php echo $this->getTitle(); ?></h4>
                 <table class="table table-hover table-striped table-dark">
                     <thead>
+
                         <tr>
+                            <?php foreach ($this->getColumns() as $key => $column) : ?>
+                                <th><?php echo $column['label']; ?></th>
+                            <?php endforeach; ?>
+                            <th colspan="3">Action</th>
+
+                        </tr>
                         <tr>
+                            <form action="<?php echo $this->getUrl()->getUrl('filter'); ?>" method="POST">
+                                <?php foreach ($this->getColumns() as $filterColumn) : ?>
+                                    <td>
+                                        <div>
+                                            <input type="text" class="form-control" id="<?php echo $filterColumn['field']; ?>" name="filter[<?php echo $filterColumn['type']; ?>][<?php echo $filterColumn['field']; ?>]" value="<?php echo $this->getFilter()->getFilterValue($filterColumn['type'], $filterColumn['field']); ?>">
+                                        </div>
+                                    </td>
+                                <?php endforeach; ?>
+                                <td colspan="3">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </td>
+                            </form>
+                        </tr>
+                        <!-- <tr>
                             <th>Admin Name</th>
                             <th>Admin Username</th>
                             <th>Admin Status</th>
                             <th>Created Date</th>
                             <th colspan="3">Action</th>
-                        </tr>
-                        </tr>
+                        </tr> -->
                     </thead>
                     <tbody>
                         <?php
                         $data = $this->getPaginationAdmin();
                         //$data = $this->getAdmin();
-                        if ($data == "") {
                         ?>
+
+                        <?php if ($data == "") : ?>
                             <tr>
                                 <td colspan="6">
                                     <strong>
@@ -39,13 +62,24 @@
                                     </strong>
                                 </td>
                             </tr>
-                            <?php
+                        <?php else : ?>
 
-                        } else {
-                            foreach ($data->getData() as $key => $value) {
 
-                            ?>
-                                <tr id="txtData" class="<?php echo ($value->status == 1) ? "" : "table-danger"; ?>">
+                            <?php foreach ($data->getData() as $value) : ?>
+                                <tr class="<?php echo ($value->status == 1) ? "" : "table-danger"; ?>">
+                                    <?php foreach ($this->getColumns() as $column) : ?>
+                                        <th><?php echo $this->getFieldValue($value, $column['field']); ?></th>
+                                    <?php endforeach; ?>
+                                    <?php foreach ($this->getActions() as $action) : ?>
+                                        <th>
+                                            <a href="<?php echo $this->getMethodUrl($value, $action['method']); ?>">
+                                                <i class="<?php echo $action['class']; ?>"></i>
+                                            </a>
+                                        </th>
+                                    <?php endforeach; ?>
+                                </tr>
+
+                                <?php /*<tr id="txtData" class="<?php echo ($value->status == 1) ? "" : "table-danger"; ?>">
                                     <td><?php echo $value->name; ?></td>
                                     <td><?php echo $value->username; ?></td>
                                     <td><?php
@@ -65,9 +99,9 @@
                                     </th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('form', NULL, ['id' => $value->adminId]); ?>"><i class="fa fa-pencil btn-info btn"></i></a></th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('delete', NULL, ['id' => $value->adminId]); ?>"><i class="fa fa-trash btn-danger btn"></i></a></th>
-                                </tr>
-                        <?php }
-                        } ?>
+                                </tr>*/ ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

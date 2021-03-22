@@ -1,30 +1,30 @@
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'shipment')); ?>">Shipping</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\shipment')); ?>">Shipping</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'payment')); ?>">Payments</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\payment')); ?>">Payments</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'product')); ?>">Products</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\product')); ?>">Products</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'category')); ?>">Categories</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\category')); ?>">Categories</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'customer')); ?>">Customer</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\customer')); ?>">Customer</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'attribute')); ?>">Attribute</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\attribute')); ?>">Attribute</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin')); ?>">Admin</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\admin')); ?>">Admin</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'customergroup')); ?>">Customer Group</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\customergroup')); ?>">Customer Group</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'cms')); ?>">Cms Group</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\cms')); ?>">Cms Group</a>
 </li>
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'brand')); ?>">Brand</a>
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\brand')); ?>">Brand</a>
 </li>

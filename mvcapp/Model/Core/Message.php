@@ -1,12 +1,17 @@
 <?php
 
-Mage::loadClassByFileName("model_core_session");
+namespace Model\Core;
 
-class Model_Core_Message extends Model_Core_Session{
-    
+use Mage;
+
+Mage::loadClassByFileName("model\core\session");
+
+class Message extends \Model\Core\Session
+{
+
     public function setSuccess($message)
     {
-        $this->success = $message;    
+        $this->success = $message;
         return $this;
     }
 

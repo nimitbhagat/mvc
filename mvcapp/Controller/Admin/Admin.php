@@ -110,4 +110,22 @@ class Admin extends CoreAdmin
         }
         $this->redirect('grid', null, null, true);
     }
+
+    public function filterAction()
+    {
+        $filters = $this->getRequest()->getPost('filter');
+
+        $filterModel = Mage::getModel('Model\Admin\Filter');
+        $filterModel->setFilters($filters);
+
+
+
+        $gridBlock = Mage::getBlock("Block\Admin\Admin\Grid")->setFilter($filterModel);
+        $layout = $this->getLayout();
+        $layout->setTemplate("./core/layout/one_column.php");
+        $layout->getChild("Content")->addChild($gridBlock, 'Grid');
+        $this->renderLayout();
+
+        //print_r($_SESSION);
+    }
 }
