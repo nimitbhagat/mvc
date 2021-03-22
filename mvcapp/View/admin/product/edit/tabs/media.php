@@ -39,7 +39,7 @@
                                             foreach ($imageData->getData() as $key => $value) {
                                         ?>
                                                 <tr id="txtData">
-                                                    <td><img src="./Skin/admin/images/<?php echo "{$id}/" . $value->imageName; ?>" alt="" height="100px" width="100px"></td>
+                                                    <td><img src="./Media/images/Products/<?php echo "{$id}/" . $value->imageName; ?>" alt="" height="100px" width="100px"></td>
                                                     <td>
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" name="image[<?php echo $value->mediaId; ?>][label]" placeholder="Label" id="inputDefault" value="<?php echo $value->label; ?>">

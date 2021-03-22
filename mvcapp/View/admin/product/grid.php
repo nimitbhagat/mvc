@@ -1,7 +1,8 @@
+<?php $pager = $this->pagination()->getPager(); ?>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-lg-8 col-md-7 col-sm-6">
-            <a href="<?php echo $this->getUrl()->getUrl('form'); ?>" class="btn btn-primary" name="update">Add Product
+            <a href="<?php echo $this->getUrl()->getUrl('form', null, null, true); ?>" class="btn btn-primary" name="update">Add Product
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -29,7 +30,8 @@
                     </thead>
                     <tbody>
                         <?php
-                        $data = $this->getProducts();
+                        $data = $this->getPaginationProducts();
+                        //$data = $this->getProducts();
                         if ($data == "") {
                         ?>
                             <tr>
@@ -74,6 +76,24 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item  <?php echo (!$pager->getPrevious()) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $pager->getPrevious()], true); ?>">Previous</a>
+                </li>
+
+                <?php foreach (range($pager->getStart(), $pager->getNoOfPages()) as $value) : ?>
+                    <li class="page-item <?php echo ($this->getRequest()->getGet('page') == $value) ? 'active' : ''; ?>">
+                        <a class="page-link " href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $value], true); ?>"><?php echo $value; ?></a>
+                    </li>
+                <?php endforeach; ?>
+
+                <li class="page-item <?php echo (!$pager->getNext()) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $pager->getNext()], true); ?>">Next</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

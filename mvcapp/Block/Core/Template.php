@@ -12,6 +12,7 @@ class Template
     protected $message = null;
     protected $request = null;
     protected $url = null;
+    protected $pager = null;
 
     public function __construct()
     {
@@ -81,7 +82,7 @@ class Template
     {
         return $this->template;
     }
-    
+
     public function toHtml()
     {
         ob_start();
@@ -111,5 +112,23 @@ class Template
     public function getMessage()
     {
         return Mage::getModel("Model\Admin\Message");
+    }
+
+    public function setPager(\Controller\Core\Pager $pager = null)
+    {
+        if (!$pager) {
+            $pager = Mage::getController('Controller\Core\Pager');
+        }
+        $this->pager = $pager;
+
+        return $this;
+    }
+
+    public function getPager()
+    {
+        if (!$this->pager) {
+            $this->setPager();
+        }
+        return $this->pager;
     }
 }

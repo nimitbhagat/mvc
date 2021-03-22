@@ -5,6 +5,7 @@ namespace Controller\Admin;
 use Controller\Core\Admin;
 use Exception;
 use Mage;
+use Model\ProductModel;
 
 Mage::loadClassByFileName('Controller\Core\Admin');
 
@@ -84,7 +85,7 @@ class Product extends Admin
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
-        $this->redirect('grid', null, null, true);
+        $this->redirect('grid', null, [], true);
     }
     public function changeStatusAction()
     {

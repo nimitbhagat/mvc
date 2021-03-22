@@ -1,3 +1,4 @@
+<?php $pager = $this->pagination()->getPager(); ?>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-lg-8 col-md-7 col-sm-6">
@@ -29,7 +30,8 @@
                     </thead>
                     <tbody>
                         <?php
-                        $data = $this->getCustomers();
+                        $data = $this->getPaginationCustomers();
+                        //$data = $this->getCustomers();
                         if ($data == "") {
                         ?>
                             <tr>
@@ -42,7 +44,7 @@
                             <?php
 
                         } else {
-                            $zipcode = $this->getZipCode();
+                            //$zipcode = $this->getZipCode();
                             foreach ($data->getData() as $key => $value) {
                             ?>
                                 <tr id="txtData" class="<?php echo ($value->status == 1) ? "" : "table-danger"; ?>">
@@ -55,19 +57,7 @@
                                     <td><?php echo $value->lastName; ?></td>
                                     <td><?php echo $value->email ?></td>
                                     <td>
-                                        <?php
-                                        if ($zipcode) :
-                                            foreach ($zipcode->getData() as $zipcodeData) :
-                                                if ($value->customerId == $zipcodeData->customerId) :
-                                                    echo $zipcodeData->zipcode;
-                                                else :
-                                                    echo "NO BILLING ADDRESS FOUND";
-                                                endif;
-                                            endforeach;
-                                        else :
-                                            echo "NO BILLING ADDRESS FOUND";
-                                        endif;
-                                        ?>
+                                        <?php echo $this->getZipCode($value->customerId); ?>
                                     </td>
                                     <td><?php echo $value->mobile ?></td>
                                     <td><?php
@@ -92,6 +82,24 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item  <?php echo (!$pager->getPrevious()) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $pager->getPrevious()], true); ?>">Previous</a>
+                </li>
+
+                <?php foreach (range($pager->getStart(), $pager->getNoOfPages()) as $value) : ?>
+                    <li class="page-item <?php echo ($this->getRequest()->getGet('page') == $value) ? 'active' : ''; ?>">
+                        <a class="page-link " href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $value], true); ?>"><?php echo $value; ?></a>
+                    </li>
+                <?php endforeach; ?>
+
+                <li class="page-item <?php echo (!$pager->getNext()) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="<?php echo $this->getUrl()->getUrl(null, null, ['page' => $pager->getNext()], true); ?>">Next</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

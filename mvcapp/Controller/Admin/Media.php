@@ -38,7 +38,7 @@ class Media extends \Controller\Core\Admin
                     throw new Exception("extension not allowed, please choose a JPEG or PNG file.");
                 }
 
-                $dir = './Skin/admin/images/' . $this->getRequest()->getGet('id');
+                $dir = './Media/images/Products/' . $this->getRequest()->getGet('id');
 
 
 
@@ -47,7 +47,7 @@ class Media extends \Controller\Core\Admin
                 }
 
                 if (move_uploaded_file($file_tmp, "{$dir}/" . $file_name)) {
-                    //rename("./Skin/admin/images/.{$file_name}", "./Skin/admin/images/.{$key}");
+                    //rename("./Media/images/Products/.{$file_name}", "./Media/Products/images/.{$key}");
                     $Media = Mage::getModel("Model\MediaModel");
                     $Media->productId = $this->getRequest()->getGet('id');
                     $Media->imageName = $file_name;
@@ -180,7 +180,7 @@ class Media extends \Controller\Core\Admin
 
                 $id = $this->getRequest()->getGet('id');
                 foreach ($filenames->getData() as $key => $value) {
-                    unlink("./Skin/admin/images/{$id}/{$value->imageName}");
+                    unlink("./Media/images/Products/{$id}/{$value->imageName}");
                 }
 
                 $query = "delete from productmedia  where mediaId IN (" . implode(',', $keys) . ")";

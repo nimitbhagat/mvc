@@ -85,12 +85,6 @@ class Table
     }
     public function save()
     {
-        // if(!array_key_exists('status',$this->data)){
-        //     $this->data['status']=0;
-        // }					
-        // else{
-        //     $this->data['status']=1;
-        // }
         if (!array_key_exists($this->getPrimaryKey(), $this->data)) {
             $key = implode(',', array_keys($this->data));
 
@@ -100,15 +94,9 @@ class Table
 
             $actual_value = implode(",", $values);
             $query = "insert into `{$this->getTableName()}`({$key}) VALUES ({$actual_value})";
+
             return $this->insert($query);
         } else {
-
-            // if (!array_key_exists('status', $this->data)) {
-            //     $this->data['status'] = 0;
-            // } else {
-            //     $this->data['status'] = 1;
-            // }
-
             $value = array_values($this->data);
             $filed = array_keys($this->data);
             $final = null;
@@ -161,6 +149,7 @@ class Table
             $status = 1;
         }
         $query = "UPDATE {$this->getTableName()} SET status={$status} where {$this->getPrimaryKey()}={$id}";
+
         if (!$this->update($query)) {
             return false;
         }

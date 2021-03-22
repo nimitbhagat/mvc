@@ -124,6 +124,16 @@ class Adapter
 		return array_combine($columns, $values);
 	}
 
+	public function fetchOne($query)
+	{
+		if (!$this->isConnected()) {
+			$this->connection();
+		}
+		$result = $this->getConnect()->query($query);
+
+		return  $result->num_rows;
+	}
+
 	public function alterTable($query)
 	{
 		if (!$this->isConnected()) {

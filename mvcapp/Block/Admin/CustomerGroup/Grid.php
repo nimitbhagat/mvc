@@ -25,6 +25,7 @@ class Grid extends \Block\Core\Template
         $this->customerGroups = $customerGroups;
         return $this;
     }
+
     public function getCustomerGroups()
     {
         if (!$this->customerGroups) {
@@ -32,8 +33,43 @@ class Grid extends \Block\Core\Template
         }
         return $this->customerGroups;
     }
+
     public function getTitle()
     {
         return "Manage Customer Group";
+    }
+
+    public function getPaginationCustomerGroups()
+    {
+        $customerGroups = Mage::getModel("Model\CustomerGroupModel");
+        $recordPerPage = $this->getPager()->getRecordPerPage();
+        $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
+        if ($start < 0) {
+            $start = 0;
+        }
+        $query = "SELECT * from `customergroup` LIMIT {$start},{$recordPerPage}";
+        return $customerGroups->fetchAll($query);
+    }
+
+    public function pagination()
+    {
+        $query = "Select * from `customergroup`";
+        $customerGroup = Mage::getModel('Model\CustomerGroupModel');
+
+        $records = $customerGroup->getAdapter()->fetchOne($query);
+
+        $this->getPager()->setTotalRecords($records);
+        $this->getPager()->setRecordPerPage(10);
+
+        $page = $this->getRequest()->getGet('page');
+
+        if (!$page) {
+            $page = 1;
+        }
+        $this->getPager()->setCurrentPage($page);
+
+        $this->getPager()->calculate();
+
+        return $this;
     }
 }

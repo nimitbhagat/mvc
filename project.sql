@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2021 at 01:42 PM
+-- Generation Time: Mar 22, 2021 at 05:41 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -37,6 +37,16 @@ CREATE TABLE `address` (
   `country` varchar(255) NOT NULL,
   `addressType` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`addressId`, `customerId`, `address`, `city`, `state`, `zipcode`, `country`, `addressType`) VALUES
+(12, 12, 'asdf', 'VALSAD', 'GUJARAT', '123456', 'INDIA', 'Billing'),
+(13, 12, 'Rashmi Society', 'VALSAD', 'GUJARAT', '123456', 'INDIA', 'Shipping'),
+(14, 8, 'Rashmi Society', 'VALSAD', 'GUJARAT', '396125', 'INDIA', 'Billing'),
+(15, 8, 'Rashmi Society', 'VALSAD', 'GUJARAT', '396125', 'INDIA', 'Shipping');
 
 -- --------------------------------------------------------
 
@@ -82,7 +92,6 @@ CREATE TABLE `attribute` (
 --
 
 INSERT INTO `attribute` (`attributeId`, `name`, `entityTypeId`, `code`, `inputType`, `backendType`, `sortOrder`, `backendModel`) VALUES
-(29, 'Brand', 'product', 'brand', 'checkbox', 'varchar(255)', 3, ''),
 (30, 'Color', 'product', 'Color', 'radio', 'varchar(255)', 2, '');
 
 -- --------------------------------------------------------
@@ -103,15 +112,32 @@ CREATE TABLE `attribute_option` (
 --
 
 INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
-(31, 'Samsung', 29, 0),
-(32, 'Nokia', 29, 1),
-(33, 'Apple', 29, 3),
-(34, 'Vivo', 29, 4),
 (35, 'Red', 30, 0),
 (36, 'Green', 30, 1),
 (37, 'Blue', 30, 2),
 (38, 'Yellow', 30, 3),
 (39, 'Brown', 30, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `brand`
+--
+
+CREATE TABLE `brand` (
+  `brandId` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`brandId`, `name`, `image`, `status`, `createdDate`) VALUES
+(35, 'Nike', 'nike.png', 1, '2021-03-20 01:02:03');
 
 -- --------------------------------------------------------
 
@@ -264,8 +290,12 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdDate`, `updatedDate`, `Brand`, `Color`) VALUES
-(122, 'sgn10l', 'Samsung Galaxy Note 10 Lite', 50000, 0, 1, 'Smartphone', 1, '2021-03-05 16:14:34', '2021-03-18 11:55:27', 'Apple,Vivo', 'Blue'),
-(123, 'sgn11', 'Samsung Galaxy Note 11', 60000, 10, 1, 'Smartphone', 1, '2021-03-05 16:20:21', '2021-03-16 11:57:12', 'Samsung', 'Red,Yellow,Brown');
+(122, 'sgn10l', 'Samsung Galaxy Note 10 Lite', 50000, 0, 1, 'Smartphone', 1, '2021-03-05 16:14:34', '2021-03-18 11:55:27', '', 'Blue'),
+(123, 'sgn11', 'Samsung Galaxy Note 11', 60000, 10, 1, 'Smartphone', 1, '2021-03-05 16:20:21', '2021-03-16 11:57:12', '', 'Red,Yellow,Brown'),
+(128, 'MG5+', 'Moto G5s+', 40000, 1, 1, '', 1, '2021-03-18 23:20:15', '0000-00-00 00:00:00', '', ''),
+(129, 'n-110', 'Nokia 1100', 1600, 0, 1, '', 1, '2021-03-18 23:20:33', '0000-00-00 00:00:00', '', ''),
+(130, 'v19', 'Vivo 19', 20000, 0, 1, '', 1, '2021-03-19 01:00:27', '0000-00-00 00:00:00', '', ''),
+(131, 'O10', 'Oppo 10', 20000, 1, 1, '', 1, '2021-03-19 01:03:56', '0000-00-00 00:00:00', '', '');
 
 -- --------------------------------------------------------
 
@@ -291,8 +321,8 @@ CREATE TABLE `productmedia` (
 INSERT INTO `productmedia` (`productId`, `mediaId`, `imageName`, `label`, `small`, `thumb`, `base`, `gallery`) VALUES
 (122, 39, '71gljD6pGtL._SL1500_.jpg', '', 1, 0, 0, 1),
 (122, 40, '71SFiUok-NL._SL1500_.jpg', '', 0, 1, 0, 1),
-(122, 41, '71T0KJFxCHL._SL1500_.jpg', '', 0, 0, 1, 1),
-(122, 42, '513iLmPNm9L._SL1104_.jpg', '', 0, 0, 0, 1),
+(122, 41, '71T0KJFxCHL._SL1500_.jpg', '', 0, 0, 0, 1),
+(122, 42, '513iLmPNm9L._SL1104_.jpg', '', 0, 0, 1, 1),
 (123, 43, 'IMG_0362.jpg', NULL, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
@@ -373,6 +403,12 @@ ALTER TABLE `attribute_option`
   ADD KEY `attributeId` (`attributeId`);
 
 --
+-- Indexes for table `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`brandId`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -440,7 +476,7 @@ ALTER TABLE `shipping`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -459,6 +495,12 @@ ALTER TABLE `attribute`
 --
 ALTER TABLE `attribute_option`
   MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `brandId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -494,7 +536,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `productmedia`

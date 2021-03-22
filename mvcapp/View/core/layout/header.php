@@ -25,3 +25,6 @@
 <li class="nav-item active">
     <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'cms')); ?>">Cms Group</a>
 </li>
+<li class="nav-item active">
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'brand')); ?>">Brand</a>
+</li>

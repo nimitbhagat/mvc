@@ -38,4 +38,38 @@ class Grid extends Template
     {
         return "Manage Admins";
     }
+
+    public function getPaginationAdmin()
+    {
+        $admins = Mage::getModel("Model\AdminModel");
+        $recordPerPage = $this->getPager()->getRecordPerPage();
+        $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
+        if ($start < 0) {
+            $start = 0;
+        }
+        $query = "SELECT * from `admin` LIMIT {$start},{$recordPerPage}";
+        return $admins->fetchAll($query);
+    }
+
+    public function pagination()
+    {
+        $query = "Select * from `admin`";
+        $product = Mage::getModel('Model\AdminModel');
+
+        $records = $product->getAdapter()->fetchOne($query);
+
+        $this->getPager()->setTotalRecords($records);
+        $this->getPager()->setRecordPerPage(10);
+
+        $page = $this->getRequest()->getGet('page');
+
+        if (!$page) {
+            $page = 1;
+        }
+        $this->getPager()->setCurrentPage($page);
+
+        $this->getPager()->calculate();
+
+        return $this;
+    }
 }
