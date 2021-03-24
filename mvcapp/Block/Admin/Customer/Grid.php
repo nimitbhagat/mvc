@@ -20,7 +20,7 @@ class Grid extends \Block\Core\Template
     public function setCustomers($customers = null)
     {
         if (!$customers) {
-            $customers = Mage::getModel("Model\CustomerModel");
+            $customers = Mage::getModel("Model\Customer");
             $customers = $customers->fetchAll();
         }
         $this->customers = $customers;
@@ -40,7 +40,7 @@ class Grid extends \Block\Core\Template
 
     public function getGroupName($id)
     {
-        $customers = Mage::getModel("Model\CustomerGroupModel");
+        $customers = Mage::getModel("Model\CustomerGroup");
         $data = $customers->load($id);
 
         return $data->name;
@@ -48,7 +48,7 @@ class Grid extends \Block\Core\Template
 
     public function getZipCode($id)
     {
-        $zipcode = Mage::getModel("Model\CustomerAddressModel");
+        $zipcode = Mage::getModel("Model\CustomerAddress");
         $query = "select `zipcode` from `address` where `addressType`='Billing' and `customerId`={$id}";
 
         $data = $zipcode->getAdapter()->fetchRow($query);
@@ -58,7 +58,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationCustomers()
     {
-        $customers = Mage::getModel("Model\CustomerModel");
+        $customers = Mage::getModel("Model\Customer");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -71,7 +71,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `customer`";
-        $product = Mage::getModel('Model\CustomerModel');
+        $product = Mage::getModel('Model\Customer');
 
         $records = $product->getAdapter()->fetchOne($query);
 

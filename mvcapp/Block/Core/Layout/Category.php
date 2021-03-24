@@ -15,7 +15,7 @@ class Category extends \Block\Core\Template
 
     public function getCategories()
     {
-        $category = Mage::getModel('Model\CategoryModel');
+        $category = Mage::getModel('Model\Category');
         $query = "select * from category";
         return $category->fetchAll($query);
     }

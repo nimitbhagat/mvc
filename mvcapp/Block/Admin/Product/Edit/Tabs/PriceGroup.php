@@ -26,8 +26,8 @@ class PriceGroup extends Template
 
     public function getPriceGroup($id)
     {
-        $customerGroupmodel = Mage::getModel('Model\PriceGroupModel');
-        $productModel = Mage::getModel('Model\ProductModel');
+        $customerGroupmodel = Mage::getModel('Model\PriceGroup');
+        $productModel = Mage::getModel('Model\Product');
 
         $product = $productModel->load($this->getRequest()->getGet('id'));
 

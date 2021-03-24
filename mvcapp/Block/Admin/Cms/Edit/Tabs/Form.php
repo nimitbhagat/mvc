@@ -17,7 +17,7 @@ class Form extends \Block\Core\Template
     public function setCms($cmsies = null)
     {
         if (!$cmsies) {
-            $cmsies = Mage::getModel("Model\CmsModel");
+            $cmsies = Mage::getModel("Model\Cms");
             if ($id = $this->getRequest()->getGet('id')) {
                 $cms = $cmsies->load($id);
                 if (!$cms) {

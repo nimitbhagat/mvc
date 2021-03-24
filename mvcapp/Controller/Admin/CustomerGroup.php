@@ -42,7 +42,7 @@ class CustomerGroup extends \Controller\Core\Admin
     public function saveAction()
     {
         try {
-            $customerGroup = Mage::getModel("Model\CustomerGroupModel");
+            $customerGroup = Mage::getModel("Model\CustomerGroup");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request");
             }
@@ -77,7 +77,7 @@ class CustomerGroup extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $customerGroup = Mage::getModel('Model\CustomerGroupModel');
+            $customerGroup = Mage::getModel('Model\CustomerGroup');
             $customerGroup->id = $id;
             $customerGroup->status = $st;
             $customerGroup->changeStatus();
@@ -98,7 +98,7 @@ class CustomerGroup extends \Controller\Core\Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\CustomerGroupModel');
+            $delModel = Mage::getModel('Model\CustomerGroup');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

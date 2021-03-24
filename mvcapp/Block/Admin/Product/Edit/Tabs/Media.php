@@ -17,7 +17,7 @@ class Media extends Template
 
     public function getMedia($id)
     {
-        $mediaModel = Mage::getModel("Model\MediaModel");
+        $mediaModel = Mage::getModel("Model\Media");
         $query = "select * from `productmedia` where `productId` =" . $id;
         $media = $mediaModel->fetchAll($query);
         return $media;

@@ -19,7 +19,7 @@ class Form extends \Block\Core\Template
     public function setCustomerGroup($customerGroups = null)
     {
         if (!$customerGroups) {
-            $customerGroups = Mage::getModel("Model\CustomerGroupModel");
+            $customerGroups = Mage::getModel("Model\CustomerGroup");
             if ($id = $this->getRequest()->getGet('id')) {
                 $customerGroup = $customerGroups->load($id);
                 if (!$customerGroup) {

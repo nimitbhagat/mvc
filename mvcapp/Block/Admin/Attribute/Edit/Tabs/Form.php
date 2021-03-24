@@ -18,7 +18,7 @@ class Form extends Template
     public function setAttribute($attributes = null)
     {
         if (!$attributes) {
-            $attributes = Mage::getModel("Model\AttributeModel");
+            $attributes = Mage::getModel("Model\Attribute");
             if ($id = $this->getRequest()->getGet('id')) {
                 $attribute = $attributes->load($id);
                 if (!$attribute) {

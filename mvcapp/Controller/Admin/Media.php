@@ -48,7 +48,7 @@ class Media extends \Controller\Core\Admin
 
                 if (move_uploaded_file($file_tmp, "{$dir}/" . $file_name)) {
                     //rename("./Media/images/Products/.{$file_name}", "./Media/Products/images/.{$key}");
-                    $Media = Mage::getModel("Model\MediaModel");
+                    $Media = Mage::getModel("Model\Media");
                     $Media->productId = $this->getRequest()->getGet('id');
                     $Media->imageName = $file_name;
                     if (!$Media->save()) {
@@ -144,7 +144,7 @@ class Media extends \Controller\Core\Admin
 
                     $query = "UPDATE `productmedia` SET {$final} WHERE `mediaId` = '{$key}'";
 
-                    $upModel = Mage::getModel('Model\MediaModel');
+                    $upModel = Mage::getModel('Model\Media');
                     if ($upModel->update($query)) {
                         $this->getMessage()->setSuccess("Update Changes Successfully !!");
                     }
@@ -173,7 +173,7 @@ class Media extends \Controller\Core\Admin
                     throw new Exception("Please Select The Image", 1);
                 }
 
-                $Media = Mage::getModel('Model\MediaModel');
+                $Media = Mage::getModel('Model\Media');
                 echo $query = "SELECT imageName from productmedia  where mediaId IN (" . implode(',', $keys) . ")";
 
                 $filenames = $Media->fetchAll($query);

@@ -41,7 +41,7 @@ class Attribute extends Admin
     public function saveAction()
     {
         try {
-            $attribute = Mage::getModel("Model\AttributeModel");
+            $attribute = Mage::getModel("Model\Attribute");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request", 1);
             }
@@ -97,7 +97,7 @@ class Attribute extends Admin
             $id = $this->getRequest()->getGet('id');
 
             //$delModel->delete();
-            $delModel = Mage::getModel('Model\AttributeModel');
+            $delModel = Mage::getModel('Model\Attribute');
 
             $attributeData = $delModel->load($id);
             $modelname = 'Model\\' . $attributeData->entityTypeId . "Model";
@@ -123,7 +123,7 @@ class Attribute extends Admin
 
     public function optionAction()
     {
-        $attribute = Mage::getModel('Model\AttributeModel');
+        $attribute = Mage::getModel('Model\Attribute');
         $id = $this->getRequest()->getGet('id');
     }
 }

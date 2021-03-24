@@ -42,7 +42,7 @@ class Customer extends \Controller\Core\Admin
     public function addressAction()
     {
         $customerId = $this->getRequest()->getGet('id');
-        $customer = Mage::getModel("Model\CustomerAddressModel");
+        $customer = Mage::getModel("Model\CustomerAddress");
 
         $query = "SELECT addressType from `address` where customerId =" . $customerId;
         $existing = $customer->fetchAll($query);
@@ -128,7 +128,7 @@ class Customer extends \Controller\Core\Admin
     public function saveAction()
     {
         try {
-            $customer = Mage::getModel("Model\CustomerModel");
+            $customer = Mage::getModel("Model\Customer");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request");
             }
@@ -165,7 +165,7 @@ class Customer extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\CustomerModel');
+            $model = Mage::getModel('Model\Customer');
             $model->id = $id;
             $model->status = $st;
             $model->changeStatus();
@@ -185,7 +185,7 @@ class Customer extends \Controller\Core\Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\CustomerModel');
+            $delModel = Mage::getModel('Model\Customer');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

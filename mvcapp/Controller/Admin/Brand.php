@@ -41,7 +41,7 @@ class Brand extends \Controller\Core\Admin
     public function saveAction()
     {
         try {
-            $brand = Mage::getModel("Model\BrandModel");
+            $brand = Mage::getModel("Model\Brand");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request", 1);
             }
@@ -176,7 +176,7 @@ class Brand extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\BrandModel');
+            $model = Mage::getModel('Model\Brand');
             $model->id = $id;
             $model->status = $st;
             if ($model->changeStatus()) {
@@ -196,7 +196,7 @@ class Brand extends \Controller\Core\Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\BrandModel');
+            $delModel = Mage::getModel('Model\Brand');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

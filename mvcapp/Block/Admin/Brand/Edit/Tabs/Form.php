@@ -18,7 +18,7 @@ class Form extends \Block\Core\Template
     public function setBrand($brands = null)
     {
         if (!$brands) {
-            $brands = Mage::getModel("Model\BrandModel");
+            $brands = Mage::getModel("Model\Brand");
             if ($id = $this->getRequest()->getGet('id')) {
                 $brand = $brands->load($id);
                 if (!$brand) {

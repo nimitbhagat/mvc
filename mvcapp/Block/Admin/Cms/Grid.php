@@ -22,7 +22,7 @@ class Grid extends \Block\Core\Template
     public function setCms($cmsies = null)
     {
         if (!$cmsies) {
-            $cmsies = Mage::getModel("Model\CmsModel");
+            $cmsies = Mage::getModel("Model\Cms");
             $cmsies = $cmsies->fetchAll();
         }
         $this->cmsies = $cmsies;
@@ -44,7 +44,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationCms()
     {
-        $Cms = Mage::getModel("Model\ProductModel");
+        $Cms = Mage::getModel("Model\Product");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -57,7 +57,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `cms_page`";
-        $cms = Mage::getModel('Model\CmsModel');
+        $cms = Mage::getModel('Model\Cms');
 
         $records = $cms->getAdapter()->fetchOne($query);
 

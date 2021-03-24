@@ -18,7 +18,7 @@ class Form extends Template
     public function setProduct($products = null)
     {
         if (!$products) {
-            $products = Mage::getModel("Model\ProductModel");
+            $products = Mage::getModel("Model\Product");
             if ($id = $this->getRequest()->getGet('id')) {
                 $product = $products->load($id);
                 if (!$product) {

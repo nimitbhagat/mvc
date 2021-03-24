@@ -18,7 +18,7 @@ class Form extends Template
     public function setAdmin($admins = null)
     {
         if (!$admins) {
-            $admins = Mage::getModel("Model\AdminModel");
+            $admins = Mage::getModel("Model\Admin");
             if ($id = $this->getRequest()->getGet('id')) {
                 $admin = $admins->load($id);
                 if (!$admin) {

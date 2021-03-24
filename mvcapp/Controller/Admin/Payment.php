@@ -41,7 +41,7 @@ class Payment extends \Controller\Core\Admin
     public function saveAction()
     {
         try {
-            $payment = Mage::getModel("Model\PaymentModel");
+            $payment = Mage::getModel("Model\Payment");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request");
             }
@@ -79,7 +79,7 @@ class Payment extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('model\PaymentModel');
+            $model = Mage::getModel('model\Payment');
             $model->id = $id;
             $model->status = $st;
 
@@ -100,7 +100,7 @@ class Payment extends \Controller\Core\Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\PaymentModel');
+            $delModel = Mage::getModel('Model\Payment');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

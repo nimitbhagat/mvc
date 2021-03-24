@@ -19,14 +19,14 @@ class Form extends \Block\Core\Template
 
     public  function getGroupName()
     {
-        $customers = Mage::getModel("Model\CustomerGroupModel");
+        $customers = Mage::getModel("Model\CustomerGroup");
         $data = $customers->fetchAll();
         return $data;
     }
 
     public  function getSelectedGroup($id)
     {
-        $customers = Mage::getModel("Model\CustomerGroupModel");
+        $customers = Mage::getModel("Model\CustomerGroup");
         $data = $customers->load($id);
         return $data->name;
     }
@@ -34,7 +34,7 @@ class Form extends \Block\Core\Template
     public function setCustomer($customers = null)
     {
         if (!$customers) {
-            $customers = Mage::getModel("Model\CustomerModel");
+            $customers = Mage::getModel("Model\Customer");
             if ($id = $this->getRequest()->getGet('id')) {
                 $customer = $customers->load($id);
                 if (!$customer) {

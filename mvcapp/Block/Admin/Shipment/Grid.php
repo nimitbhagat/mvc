@@ -21,7 +21,7 @@ class Grid extends Template
     public function setShipment($shipments = null)
     {
         if (!$shipments) {
-            $shipments = Mage::getModel("Model\ShipmentModel");
+            $shipments = Mage::getModel("Model\Shipment");
             $shipments = $shipments->fetchAll();
         }
         $this->shipments = $shipments;
@@ -41,7 +41,7 @@ class Grid extends Template
 
     public function getPaginationShipments()
     {
-        $shipments = Mage::getModel("Model\ShipmentModel");
+        $shipments = Mage::getModel("Model\Shipment");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -54,7 +54,7 @@ class Grid extends Template
     public function pagination()
     {
         $query = "Select * from `shipping`";
-        $shipments = Mage::getModel('Model\ShipmentModel');
+        $shipments = Mage::getModel('Model\Shipment');
 
         $records = $shipments->getAdapter()->fetchOne($query);
 

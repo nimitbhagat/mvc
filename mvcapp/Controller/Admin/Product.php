@@ -2,14 +2,14 @@
 
 namespace Controller\Admin;
 
-use Controller\Core\Admin;
+use Controller\Core\Admin as coreAdmin;
 use Exception;
 use Mage;
-use Model\ProductModel;
+use Model\Product as ModelProduct;
 
 Mage::loadClassByFileName('Controller\Core\Admin');
 
-class Product extends Admin
+class Product extends coreAdmin
 {
 
     public function __construct()
@@ -42,7 +42,7 @@ class Product extends Admin
     public function saveAction()
     {
         try {
-            $product = Mage::getModel("Model\ProductModel");
+            $product = Mage::getModel("Model\Product");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request", 1);
             }
@@ -93,7 +93,7 @@ class Product extends Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\ProductModel');
+            $model = Mage::getModel('Model\Product');
             $model->id = $id;
             $model->status = $st;
             if ($model->changeStatus()) {
@@ -112,7 +112,7 @@ class Product extends Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\ProductModel');
+            $delModel = Mage::getModel('Model\Product');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

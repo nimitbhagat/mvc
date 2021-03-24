@@ -43,7 +43,7 @@ class Shipment extends Admin
     public function saveAction()
     {
         try {
-            $shipment = Mage::getModel("Model\ShipmentModel");
+            $shipment = Mage::getModel("Model\Shipment");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request");
             }
@@ -81,7 +81,7 @@ class Shipment extends Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\ShipmentModel');
+            $model = Mage::getModel('Model\Shipment');
             $model->id = $id;
             $model->status = $st;
             $model->changeStatus();
@@ -101,7 +101,7 @@ class Shipment extends Admin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\ShipmentModel');
+            $delModel = Mage::getModel('Model\Shipment');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

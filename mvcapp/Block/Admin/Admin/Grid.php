@@ -85,7 +85,7 @@ class Grid extends CoreGrid
     public function setAdmin($admins = null)
     {
         if (!$admins) {
-            $admins = Mage::getModel("Model\AdminModel");
+            $admins = Mage::getModel("Model\Admin");
             $admins = $admins->fetchAll();
         }
         $this->admins = $admins;
@@ -107,7 +107,7 @@ class Grid extends CoreGrid
 
     public function getPaginationAdmin()
     {
-        $admins = Mage::getModel("Model\AdminModel");
+        $admins = Mage::getModel("Model\Admin");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -144,7 +144,7 @@ class Grid extends CoreGrid
             }
         }
 
-        $product = Mage::getModel('Model\AdminModel');
+        $product = Mage::getModel('Model\Admin');
 
         $records = $product->getAdapter()->fetchOne($query);
 

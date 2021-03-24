@@ -20,7 +20,7 @@ class Grid extends \Block\Core\Template
     public function setCategories($categories = null)
     {
         if (!$categories) {
-            $categories = Mage::getModel("Model\CategoryModel");
+            $categories = Mage::getModel("Model\Category");
             $categories = $categories->fetchAll();
         }
         $this->categories = $categories;
@@ -38,7 +38,7 @@ class Grid extends \Block\Core\Template
     public function setCategory($categories = null)
     {
         if (!$categories) {
-            $categories = Mage::getModel("Model\CategoryModel");
+            $categories = Mage::getModel("Model\Category");
             if ($id = $this->getRequest()->getGet('id')) {
                 $category = $categories->load($id);
                 if (!$category) {
@@ -68,7 +68,7 @@ class Grid extends \Block\Core\Template
     public function getName($category)
     {
 
-        $categoryModel = Mage::getModel('Model\CategoryModel');
+        $categoryModel = Mage::getModel('Model\Category');
 
         if (!$this->categoryOptions) {
             $query = "select `categoryId`,`name` from `{$categoryModel->getTableName()}`";
@@ -87,7 +87,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationCategory()
     {
-        $categorys = Mage::getModel("Model\CategoryModel");
+        $categorys = Mage::getModel("Model\Category");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -100,7 +100,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `category`";
-        $category = Mage::getModel('Model\CategoryModel');
+        $category = Mage::getModel('Model\Category');
 
         $records = $category->getAdapter()->fetchOne($query);
 

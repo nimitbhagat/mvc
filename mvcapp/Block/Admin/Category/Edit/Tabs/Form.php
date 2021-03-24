@@ -21,7 +21,7 @@ class Form extends \Block\Core\Template
     public function setCategory($categories = null)
     {
         if (!$categories) {
-            $categories = Mage::getModel("Model\CategoryModel");
+            $categories = Mage::getModel("Model\Category");
             if ($id = $this->getRequest()->getGet('id')) {
                 $category = $categories->load($id);
                 if (!$category) {

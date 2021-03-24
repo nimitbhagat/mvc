@@ -18,7 +18,7 @@ class Grid extends \Block\Core\Template
     public function setPayments($payments = null)
     {
         if (!$payments) {
-            $payments = Mage::getModel("Model\PaymentModel");
+            $payments = Mage::getModel("Model\Payment");
             $payments = $payments->fetchAll();
         }
         $this->payments = $payments;
@@ -38,7 +38,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationPayments()
     {
-        $payments = Mage::getModel("Model\PaymentModel");
+        $payments = Mage::getModel("Model\Payment");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -51,7 +51,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `payment`";
-        $payments = Mage::getModel('Model\PaymentModel');
+        $payments = Mage::getModel('Model\Payment');
 
         $records = $payments->getAdapter()->fetchOne($query);
 

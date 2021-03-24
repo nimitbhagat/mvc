@@ -18,7 +18,7 @@ class Grid extends \Block\Core\Template
     public function setBrands($brands = null)
     {
         if (!$brands) {
-            $brands = Mage::getModel("Model\BrandModel");
+            $brands = Mage::getModel("Model\Brand");
             $brands = $brands->fetchAll();
         }
         $this->brands = $brands;
@@ -38,7 +38,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationBrands()
     {
-        $brands = Mage::getModel("Model\BrandModel");
+        $brands = Mage::getModel("Model\Brand");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -51,7 +51,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `brand`";
-        $brands = Mage::getModel('Model\BrandModel');
+        $brands = Mage::getModel('Model\Brand');
 
         $records = $brands->getAdapter()->fetchOne($query);
 

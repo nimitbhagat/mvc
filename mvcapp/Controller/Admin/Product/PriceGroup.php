@@ -28,7 +28,7 @@ class PriceGroup extends \Controller\Core\Admin
 
             if (array_key_exists('exist', $data)) {
                 foreach ($data['exist'] as $groupId => $priceGroup) {
-                    $priceGroupModel = Mage::getModel("Model\PriceGroupModel");
+                    $priceGroupModel = Mage::getModel("Model\PriceGroup");
                     echo $query = "Update `product_customer_group_price` set `groupPrice`= {$priceGroup} where  `customerGroupId`={$groupId} and `productId`={$productId}";
 
                     if ($priceGroupModel->update($query)) {
@@ -39,7 +39,7 @@ class PriceGroup extends \Controller\Core\Admin
 
             if (array_key_exists('new', $data)) {
                 foreach ($data['new'] as $groupId => $priceGroup) {
-                    $priceGroupModel = Mage::getModel("Model\PriceGroupModel");
+                    $priceGroupModel = Mage::getModel("Model\PriceGroup");
                     $priceGroupModel->productId = $productId;
                     $priceGroupModel->customerGroupId = $groupId;
                     $priceGroupModel->groupPrice = $priceGroup;

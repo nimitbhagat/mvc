@@ -42,7 +42,7 @@ class Cms extends \Controller\Core\Admin
     {
         try {
 
-            $cms = Mage::getModel("Model\CmsModel");
+            $cms = Mage::getModel("Model\Cms");
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request", 1);
             }
@@ -85,7 +85,7 @@ class Cms extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\CmsModel');
+            $model = Mage::getModel('Model\Cms');
             $model->id = $id;
             $model->status = $st;
             if ($model->changeStatus()) {
@@ -105,7 +105,7 @@ class Cms extends \Controller\Core\Admin
 
             $id = $this->getRequest()->getGet('id');
 
-            $delModel = Mage::getModel('Model\CmsModel');
+            $delModel = Mage::getModel('Model\Cms');
             $delModel->id = $id;
 
 

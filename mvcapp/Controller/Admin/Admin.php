@@ -41,7 +41,7 @@ class Admin extends CoreAdmin
     public function saveAction()
     {
         try {
-            $admin = Mage::getModel("Model\AdminModel");
+            $admin = Mage::getModel("Model\Admin");
 
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request");
@@ -77,7 +77,7 @@ class Admin extends CoreAdmin
         try {
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\AdminModel');
+            $model = Mage::getModel('Model\Admin');
             $model->id = $id;
             $model->status = $st;
             $model->changeStatus();
@@ -97,7 +97,7 @@ class Admin extends CoreAdmin
             }
 
             $id = $this->getRequest()->getGet('id');
-            $delModel = Mage::getModel('Model\AdminModel');
+            $delModel = Mage::getModel('Model\Admin');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

@@ -21,7 +21,7 @@ class Grid extends \Block\Core\Template
     public function setAttributes($attributes = null)
     {
         if (!$attributes) {
-            $attributes = Mage::getModel("Model\AttributeModel");
+            $attributes = Mage::getModel("Model\Attribute");
             $attributes = $attributes->fetchAll();
         }
         $this->attributes = $attributes;
@@ -43,7 +43,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationAttributes()
     {
-        $attribute = Mage::getModel("Model\AttributeModel");
+        $attribute = Mage::getModel("Model\Attribute");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -56,7 +56,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `attribute`";
-        $product = Mage::getModel('Model\AttributeModel');
+        $product = Mage::getModel('Model\Attribute');
 
         $records = $product->getAdapter()->fetchOne($query);
 

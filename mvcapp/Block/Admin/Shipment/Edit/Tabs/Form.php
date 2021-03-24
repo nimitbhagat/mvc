@@ -18,7 +18,7 @@ class Form extends Template
     public function setShipment($shipments = null)
     {
         if (!$shipments) {
-            $shipments = Mage::getModel("Model\ShipmentModel");
+            $shipments = Mage::getModel("Model\Shipment");
             if ($id = $this->getRequest()->getGet('id')) {
                 $shipment = $shipments->load($id);
                 if (!$shipment) {

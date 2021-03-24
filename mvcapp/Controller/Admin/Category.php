@@ -68,7 +68,7 @@ class Category extends \Controller\Core\Admin
                 throw new Exception("Invalid Post Request");
             }
 
-            $category = Mage::getModel("Model\CategoryModel");
+            $category = Mage::getModel("Model\Category");
 
             if ($categoryId = $this->getRequest()->getGet('id')) {
                 $category = $category->load($categoryId);
@@ -107,7 +107,7 @@ class Category extends \Controller\Core\Admin
         try {
             $id = $this->getRequest()->getGet('id');
             $st = $this->getRequest()->getGet('status');
-            $model = Mage::getModel('Model\CategoryModel');
+            $model = Mage::getModel('Model\Category');
             $model->id = $id;
             $model->status = $st;
             $model->changeStatus();
@@ -122,7 +122,7 @@ class Category extends \Controller\Core\Admin
     public function deleteAction()
     {
         try {
-            $category = Mage::getModel('Model\CategoryModel');
+            $category = Mage::getModel('Model\Category');
 
             if ($id = $this->getRequest()->getGet('id')) {
                 $category = $category->load($id);

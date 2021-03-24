@@ -19,7 +19,7 @@ class Grid extends \Block\Core\Template
     public function setCustomerGroups($customerGroups = null)
     {
         if (!$customerGroups) {
-            $customerGroups = Mage::getModel("Model\CustomerGroupModel");
+            $customerGroups = Mage::getModel("Model\CustomerGroup");
             $customerGroups = $customerGroups->fetchAll();
         }
         $this->customerGroups = $customerGroups;
@@ -41,7 +41,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationCustomerGroups()
     {
-        $customerGroups = Mage::getModel("Model\CustomerGroupModel");
+        $customerGroups = Mage::getModel("Model\CustomerGroup");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -54,7 +54,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `customergroup`";
-        $customerGroup = Mage::getModel('Model\CustomerGroupModel');
+        $customerGroup = Mage::getModel('Model\CustomerGroup');
 
         $records = $customerGroup->getAdapter()->fetchOne($query);
 

@@ -20,7 +20,7 @@ class Grid extends \Block\Core\Template
     public function setProducts($products = null)
     {
         if (!$products) {
-            $products = Mage::getModel("Model\ProductModel");
+            $products = Mage::getModel("Model\Product");
             $products = $products->fetchAll();
         }
         $this->products = $products;
@@ -41,7 +41,7 @@ class Grid extends \Block\Core\Template
 
     public function getPaginationProducts()
     {
-        $products = Mage::getModel("Model\ProductModel");
+        $products = Mage::getModel("Model\Product");
         $recordPerPage = $this->getPager()->getRecordPerPage();
         $start = ($this->getRequest()->getGet('page') * $recordPerPage) - $recordPerPage;
         if ($start < 0) {
@@ -54,7 +54,7 @@ class Grid extends \Block\Core\Template
     public function pagination()
     {
         $query = "Select * from `product`";
-        $product = Mage::getModel('Model\ProductModel');
+        $product = Mage::getModel('Model\Product');
 
         $records = $product->getAdapter()->fetchOne($query);
 
