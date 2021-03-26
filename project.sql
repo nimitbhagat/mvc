@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2021 at 05:41 PM
+-- Generation Time: Mar 26, 2021 at 10:12 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -68,7 +68,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminId`, `name`, `username`, `password`, `status`, `createdDate`) VALUES
-(3, 'Nimit', 'nsbhagat', '12345678', 1, '2021-03-12 22:42:11');
+(6, 'Nimit', 'nsbhagat', '', 1, '2021-03-22 23:12:09'),
+(7, 'Hemil Bhagat', 'hmbhagat', '', 1, '2021-03-24 09:43:53');
 
 -- --------------------------------------------------------
 
@@ -92,7 +93,9 @@ CREATE TABLE `attribute` (
 --
 
 INSERT INTO `attribute` (`attributeId`, `name`, `entityTypeId`, `code`, `inputType`, `backendType`, `sortOrder`, `backendModel`) VALUES
-(30, 'Color', 'product', 'Color', 'radio', 'varchar(255)', 2, '');
+(30, 'Color', 'product', 'Color', 'radio', 'varchar(255)', 2, 'Model\\Attribute\\Option'),
+(34, 'material', 'product', 'material', 'text', 'varchar(255)', 2, 'Model\\Attribute\\Option'),
+(35, 'Brand', 'product', 'brand', 'text', 'varchar(255)', 2, 'Model\\Brand\\Option');
 
 -- --------------------------------------------------------
 
@@ -129,6 +132,7 @@ CREATE TABLE `brand` (
   `name` varchar(50) NOT NULL,
   `image` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
+  `sortOrder` int(11) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -136,8 +140,15 @@ CREATE TABLE `brand` (
 -- Dumping data for table `brand`
 --
 
-INSERT INTO `brand` (`brandId`, `name`, `image`, `status`, `createdDate`) VALUES
-(35, 'Nike', 'nike.png', 1, '2021-03-20 01:02:03');
+INSERT INTO `brand` (`brandId`, `name`, `image`, `status`, `sortOrder`, `createdDate`) VALUES
+(38, 'ACME', 'acme-logo.png', 1, 0, '2021-03-25 00:25:25'),
+(39, 'ALPINE', 'Alpine_logo.png', 1, 0, '2021-03-25 00:25:57'),
+(40, 'American Drew', 'america.png', 1, 0, '2021-03-25 00:26:18'),
+(41, 'Artisan & Post', 'Artisan & Post.png', 1, 0, '2021-03-25 00:26:41'),
+(42, 'Ashley', 'Ashley.png', 1, 0, '2021-03-25 00:26:58'),
+(43, 'Aspenhome', 'Aspenhome.png', 1, 0, '2021-03-25 00:27:13'),
+(44, 'Bernards', 'Bernards.png', 1, 0, '2021-03-25 00:27:35'),
+(45, 'Bobby Berk', 'Bobby Berk.png', 1, 0, '2021-03-25 00:27:49');
 
 -- --------------------------------------------------------
 
@@ -167,7 +178,8 @@ INSERT INTO `category` (`categoryId`, `parentId`, `name`, `pathId`, `status`, `d
 (6, 2, 'Sofas', '2=6', 1, ''),
 (7, 2, 'Chairs', '2=7', 1, ''),
 (8, 3, 'Dining Sets', '3=8', 1, ''),
-(9, 3, 'Dining Tables', '3=9', 1, '');
+(9, 3, 'Dining Tables', '3=9', 1, ''),
+(10, NULL, 'Office', '10', 1, '');
 
 -- --------------------------------------------------------
 
@@ -281,21 +293,18 @@ CREATE TABLE `product` (
   `status` tinyint(1) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp(),
   `updatedDate` datetime NOT NULL,
-  `Brand` varchar(255) NOT NULL,
-  `Color` varchar(255) NOT NULL
+  `categoryId` int(11) DEFAULT NULL,
+  `Brand` varchar(255) DEFAULT NULL,
+  `Color` varchar(255) NOT NULL,
+  `material` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdDate`, `updatedDate`, `Brand`, `Color`) VALUES
-(122, 'sgn10l', 'Samsung Galaxy Note 10 Lite', 50000, 0, 1, 'Smartphone', 1, '2021-03-05 16:14:34', '2021-03-18 11:55:27', '', 'Blue'),
-(123, 'sgn11', 'Samsung Galaxy Note 11', 60000, 10, 1, 'Smartphone', 1, '2021-03-05 16:20:21', '2021-03-16 11:57:12', '', 'Red,Yellow,Brown'),
-(128, 'MG5+', 'Moto G5s+', 40000, 1, 1, '', 1, '2021-03-18 23:20:15', '0000-00-00 00:00:00', '', ''),
-(129, 'n-110', 'Nokia 1100', 1600, 0, 1, '', 1, '2021-03-18 23:20:33', '0000-00-00 00:00:00', '', ''),
-(130, 'v19', 'Vivo 19', 20000, 0, 1, '', 1, '2021-03-19 01:00:27', '0000-00-00 00:00:00', '', ''),
-(131, 'O10', 'Oppo 10', 20000, 1, 1, '', 1, '2021-03-19 01:03:56', '0000-00-00 00:00:00', '', '');
+INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdDate`, `updatedDate`, `categoryId`, `Brand`, `Color`, `material`) VALUES
+(1, 'n-110', 'Nokia 1100', 1600, 0, 1, '', 1, '2021-03-24 10:10:39', '2021-03-24 11:56:42', 6, '', 'Green', 'Leather');
 
 -- --------------------------------------------------------
 
@@ -319,11 +328,8 @@ CREATE TABLE `productmedia` (
 --
 
 INSERT INTO `productmedia` (`productId`, `mediaId`, `imageName`, `label`, `small`, `thumb`, `base`, `gallery`) VALUES
-(122, 39, '71gljD6pGtL._SL1500_.jpg', '', 1, 0, 0, 1),
-(122, 40, '71SFiUok-NL._SL1500_.jpg', '', 0, 1, 0, 1),
-(122, 41, '71T0KJFxCHL._SL1500_.jpg', '', 0, 0, 0, 1),
-(122, 42, '513iLmPNm9L._SL1104_.jpg', '', 0, 0, 1, 1),
-(123, 43, 'IMG_0362.jpg', NULL, 0, 0, 0, 0);
+(1, 46, '41U8x8N34aL.jpg', 'abc', 0, 1, 0, 1),
+(1, 47, '41wGEmM0S4L.jpg', '123', 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -343,10 +349,13 @@ CREATE TABLE `product_customer_group_price` (
 --
 
 INSERT INTO `product_customer_group_price` (`entityId`, `productId`, `customerGroupId`, `groupPrice`) VALUES
-(13, 122, 2, 49000),
-(14, 122, 5, 39500),
-(15, 122, NULL, 40000),
-(16, 122, 7, 50000);
+(13, NULL, 2, 49000),
+(14, NULL, 5, 39500),
+(15, NULL, NULL, 40000),
+(16, NULL, 7, 50000),
+(17, 1, 2, 1500),
+(18, 1, 5, 1600),
+(19, 1, 7, 1600);
 
 -- --------------------------------------------------------
 
@@ -370,7 +379,7 @@ CREATE TABLE `shipping` (
 
 INSERT INTO `shipping` (`shippingId`, `name`, `code`, `amount`, `description`, `status`, `createdDate`) VALUES
 (1, 'DHL', '603886a1c95674.96804890', 5000, 'courier', 1, '2021-02-25 11:14:17'),
-(3, 'Blue Dart', '6916519165', 100000, 'International', 1, '2021-03-07 01:19:20');
+(3, 'Blue Dart', '6916519165', 50000, 'International', 1, '2021-03-07 01:19:20');
 
 --
 -- Indexes for dumped tables
@@ -445,7 +454,8 @@ ALTER TABLE `payment`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`productId`);
+  ADD PRIMARY KEY (`productId`),
+  ADD KEY `product_ibfk_1` (`categoryId`);
 
 --
 -- Indexes for table `productmedia`
@@ -482,13 +492,13 @@ ALTER TABLE `address`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `attribute`
 --
 ALTER TABLE `attribute`
-  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `attributeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `attribute_option`
@@ -500,13 +510,13 @@ ALTER TABLE `attribute_option`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `brandId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `brandId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `cms_page`
@@ -536,25 +546,25 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `productmedia`
 --
 ALTER TABLE `productmedia`
-  MODIFY `mediaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `mediaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `product_customer_group_price`
 --
 ALTER TABLE `product_customer_group_price`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `shippingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `shippingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -583,6 +593,12 @@ ALTER TABLE `category`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`groupId`) REFERENCES `customergroup` (`groupId`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `category` (`categoryId`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `productmedia`
