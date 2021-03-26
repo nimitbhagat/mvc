@@ -48,8 +48,6 @@ class Product extends coreAdmin
             }
             $productId = $this->getRequest()->getGet('id');
 
-
-
             if (!$productId) {
                 $product->createdDate = date("Y-m-d H:i:s");
 
@@ -59,6 +57,7 @@ class Product extends coreAdmin
                 if (!$product) {
                     throw new Exception("Data Not Found", 1);
                 }
+
                 $product->updatedDate = date("y-m-d h:i:s");
                 $product->productId = $productId;
 

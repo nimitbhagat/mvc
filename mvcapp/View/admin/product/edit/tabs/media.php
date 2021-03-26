@@ -2,7 +2,7 @@
     <div class="card text-left">
         <div class="card-body">
             <h4 class="card-title"></h4>
-            <form action="<?php echo $this->getUrl()->getUrl('check', 'media'); ?>" method="post">
+            <form action="<?php echo $this->getUrl()->getUrl('check', 'admin\media'); ?>" method="post">
                 <?php if ($this->getRequest()->getGet('id')) { ?>
                     <fieldset>
                         <legend>
@@ -92,7 +92,7 @@
                     <?php } ?>
             </form>
 
-            <form method="post" action="<?php echo $this->getUrl()->getUrl('save', 'media'); ?>" enctype="multipart/form-data">
+            <form method="post" action="<?php echo $this->getUrl()->getUrl('save', 'admin\media'); ?>" enctype="multipart/form-data">
                 <div class="row">
 
                     <div class="form-group col-md-10">

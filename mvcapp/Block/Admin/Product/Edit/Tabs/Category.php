@@ -13,4 +13,26 @@ class Category extends Template
     {
         $this->setTemplate("./admin/product/edit/tabs/category.php");
     }
+
+    public function getCategory()
+    {
+
+        $categoryModel = Mage::getModel('Model\Category');
+
+        $query = "select `categoryId`,`name` from `category`";
+        return $this->categoryOptions = $categoryModel->fetchAll($query);
+    }
+
+    public function checkCategory($id)
+    {
+        $productModel = Mage::getModel('Model\Product');
+        $query = "select `productId` from `product` where categoryId='{$id}'";
+
+        $id = $productModel->getAdapter()->fetchRow($query);
+
+        if ($id) {
+            return true;
+        }
+        return false;
+    }
 }

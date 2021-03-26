@@ -61,7 +61,7 @@ class Media extends \Controller\Core\Admin
             //print_r("ERROR");
             $this->getMessage()->setFailure($e->getMessage());
         }
-        $this->redirect('form', 'product', null, false);
+        $this->redirect('form', 'admin\product', null, false);
     }
 
     public function checkAction()
@@ -74,79 +74,80 @@ class Media extends \Controller\Core\Admin
 
             if (array_key_exists('update', $this->getRequest()->getPost())) {
                 $imageData = $this->getRequest()->getPost('image');
-                $small = "";
-                $thumb = "";
-                $base = "";
+                if ($imageData) {
+                    $small = "";
+                    $thumb = "";
+                    $base = "";
 
-                if (array_key_exists('small', $imageData)) {
-                    $small = $imageData['small'];
-                    unset($imageData['small']);
-                }
-                if (array_key_exists('thumb', $imageData)) {
-                    $thumb = $imageData['thumb'];
-                    unset($imageData['thumb']);
-                }
-                if (array_key_exists('base', $imageData)) {
-                    $base = $imageData['base'];
-                    unset($imageData['base']);
-                }
-
-                foreach ($imageData as $key => $value) {
-
-                    if (array_key_exists('remove', $value)) {
-                        unset($value['remove']);
+                    if (array_key_exists('small', $imageData)) {
+                        $small = $imageData['small'];
+                        unset($imageData['small']);
+                    }
+                    if (array_key_exists('thumb', $imageData)) {
+                        $thumb = $imageData['thumb'];
+                        unset($imageData['thumb']);
+                    }
+                    if (array_key_exists('base', $imageData)) {
+                        $base = $imageData['base'];
+                        unset($imageData['base']);
                     }
 
-                    if ($key == $small) {
-                        $value['small'] = 1;
-                    }
-
-                    if ($key == $base) {
-                        $value['base'] = 1;
-                    }
-
-                    if ($key == $thumb) {
-                        $value['thumb'] = 1;
-                    }
-
-
-
-                    if (!array_key_exists('base', $value)) {
-                        $value['base'] = 0;
-                    }
-                    if (!array_key_exists('small', $value)) {
-                        $value['small'] = 0;
-                    }
-                    if (!array_key_exists('thumb', $value)) {
-                        $value['thumb'] = 0;
-                    }
-
-                    if (!array_key_exists('gallery', $value)) {
-                        $value['gallery'] = 0;
-                    } else {
-                        $value['gallery'] = 1;
-                    }
-
-                    unset($value['imageType']);
-
-                    $values = array_values($value);
-                    $fields = array_keys($value);
-                    $final = null;
-
-                    for ($i = 0; $i < count($fields); $i++) {
-                        if ($fields[$i] == $key) {
-                            $id = $values[$i];
-                            continue;
+                    foreach ($imageData as $key => $value) {
+                        if (array_key_exists('remove', $value)) {
+                            unset($value['remove']);
                         }
-                        $final = $final . "`" . $fields[$i] . "`='" . $values[$i] . "',";
-                    }
-                    $final = rtrim($final, ",");
 
-                    $query = "UPDATE `productmedia` SET {$final} WHERE `mediaId` = '{$key}'";
+                        if ($key == $small) {
+                            $value['small'] = 1;
+                        }
 
-                    $upModel = Mage::getModel('Model\Media');
-                    if ($upModel->update($query)) {
-                        $this->getMessage()->setSuccess("Update Changes Successfully !!");
+                        if ($key == $base) {
+                            $value['base'] = 1;
+                        }
+
+                        if ($key == $thumb) {
+                            $value['thumb'] = 1;
+                        }
+
+
+
+                        if (!array_key_exists('base', $value)) {
+                            $value['base'] = 0;
+                        }
+                        if (!array_key_exists('small', $value)) {
+                            $value['small'] = 0;
+                        }
+                        if (!array_key_exists('thumb', $value)) {
+                            $value['thumb'] = 0;
+                        }
+
+                        if (!array_key_exists('gallery', $value)) {
+                            $value['gallery'] = 0;
+                        } else {
+                            $value['gallery'] = 1;
+                        }
+
+                        unset($value['imageType']);
+
+                        $values = array_values($value);
+                        $fields = array_keys($value);
+                        $final = null;
+
+                        for ($i = 0; $i < count($fields); $i++) {
+                            if ($fields[$i] == $key) {
+                                $id = $values[$i];
+                                continue;
+                            }
+                            $final = $final . "`" . $fields[$i] . "`='" . $values[$i] . "',";
+                        }
+                        $final = rtrim($final, ",");
+
+                        $query = "UPDATE `productmedia` SET {$final} WHERE `mediaId` = '{$key}'";
+
+                        $upModel = Mage::getModel('Model\Media');
+                        if ($upModel->update($query)) {
+                            $this->getMessage()->setSuccess("Update Changes Successfully !!");
+                        }
                     }
                 }
             } else {
@@ -195,6 +196,6 @@ class Media extends \Controller\Core\Admin
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
-        $this->redirect('form', 'product', null, false);
+        $this->redirect('form', 'admin\product', null, false);
     }
 }

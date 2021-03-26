@@ -54,6 +54,6 @@ class PriceGroup extends \Controller\Core\Admin
 
 
 
-        $this->redirect('form', 'product', null, false);
+        $this->redirect('form', 'admin\product', null, false);
     }
 }

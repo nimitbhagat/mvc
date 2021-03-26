@@ -58,7 +58,7 @@
                             <i class="fa fa-edit"></i>
                         </button>
                     <?php } ?>
-                    <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid', null, null, true); ?>">Cancle <i class="fa fa-times"></i></a>
+                    <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid', null, null, true); ?>">Cancel <i class="fa fa-times"></i></a>
                 </fieldset>
             </form>
 

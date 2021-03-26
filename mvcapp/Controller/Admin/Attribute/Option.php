@@ -26,7 +26,7 @@ class Option extends \Controller\Core\Admin
 
             if (array_key_exists('existing', $data)) {
                 foreach ($data['existing'] as $optionId => $optionValue) {
-                    $priceGroupModel = Mage::getModel("Model\Attribute\OptionModel");
+                    $priceGroupModel = Mage::getModel("Model\Attribute\Option");
                     $query = "Update `attribute_option` set `name`= '{$optionValue['name']}', `sortOrder`='{$optionValue['sortOrder']}' where  `attributeId`={$attributeId} and `optionId`={$optionId}";
 
                     if ($priceGroupModel->update($query)) {
@@ -40,7 +40,7 @@ class Option extends \Controller\Core\Admin
                 $data['new'] = array_combine($data['new']['name'], $data['new']['sortOrder']);
                 foreach ($data['new'] as $name => $sortOrder) {
                     if ($name) {
-                        $priceGroupModel = Mage::getModel("Model\Attribute\OptionModel");
+                        $priceGroupModel = Mage::getModel("Model\Attribute\Option");
                         $priceGroupModel->attributeId  = $attributeId;
                         $priceGroupModel->name = "$name";
                         $priceGroupModel->sortOrder = "$sortOrder";
@@ -62,7 +62,7 @@ class Option extends \Controller\Core\Admin
         try {
             $id = $this->getRequest()->getGet('optionId');
 
-            $delModel = Mage::getModel('Model\Attribute\OptionModel');
+            $delModel = Mage::getModel('Model\Attribute\Option');
             $delModel->id = $id;
             $delModel->delete();
             if ($delModel->delete()) {

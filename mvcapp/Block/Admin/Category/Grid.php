@@ -58,8 +58,6 @@ class Grid extends \Block\Core\Template
         return $this->categories;
     }
 
-
-
     public function getTitle()
     {
         return "Manage Categories";

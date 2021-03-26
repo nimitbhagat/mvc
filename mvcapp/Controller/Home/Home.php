@@ -19,7 +19,15 @@ class Home extends CoreAdmin
     public function indexAction()
     {
         $gridBlock = Mage::getBlock("Block\Home\Home");
-        $this->getLayout()->setTemplate("./core/layout/template.php");
+        $this->getLayout()->setTemplate("./home/index.php");
+        $this->getLayout()->getChild("Content")->addChild($gridBlock, 'Grid');
+        $this->renderLayout();
+    }
+
+    public function gridAction()
+    {
+        $gridBlock = Mage::getBlock("Block\Home\Home");
+        $this->getLayout()->setTemplate("./home/grid.php");
         $this->getLayout()->getChild("Content")->addChild($gridBlock, 'Grid');
         $this->renderLayout();
     }

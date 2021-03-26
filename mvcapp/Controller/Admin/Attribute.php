@@ -53,7 +53,7 @@ class Attribute extends Admin
 
                 if ($attribute->save()) {
 
-                    $modelname = 'Model\\' . $attributeData['entityTypeId'] . "Model";
+                    $modelname = 'Model\\' . $attributeData['entityTypeId'];
 
                     $model = Mage::getModel($modelname);
                     $query = "ALTER TABLE `{$attributeData['entityTypeId']}` ADD `{$attributeData['name']}` {$attributeData['backendType']} NOT NULL;";
@@ -100,7 +100,7 @@ class Attribute extends Admin
             $delModel = Mage::getModel('Model\Attribute');
 
             $attributeData = $delModel->load($id);
-            $modelname = 'Model\\' . $attributeData->entityTypeId . "Model";
+            $modelname = 'Model\\' . $attributeData->entityTypeId;
 
             $model = Mage::getModel($modelname);
             $query = "ALTER TABLE `{$attributeData->entityTypeId}` DROP `{$attributeData->name}`;";
@@ -125,5 +125,9 @@ class Attribute extends Admin
     {
         $attribute = Mage::getModel('Model\Attribute');
         $id = $this->getRequest()->getGet('id');
+    }
+
+    public function testAction()
+    {
     }
 }

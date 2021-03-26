@@ -2,7 +2,7 @@
     <div class="card text-left">
         <div class="card-body">
             <h4 class="card-title"></h4>
-            <form action="<?php echo $this->getUrl()->getUrl('save', 'Product\PriceGroup'); ?>" method="post">
+            <form action="<?php echo $this->getUrl()->getUrl('save', 'Admin\Product\PriceGroup'); ?>" method="post">
 
                 <fieldset>
                     <legend>

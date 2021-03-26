@@ -125,7 +125,7 @@
 
                         <!-- <button type="reset" class="btn btn-warning">Reset <i class="fa fa-undo"></i></button> -->
 
-                        <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid'); ?>">Cancle <i class="fa fa-times"></i></a>
+                        <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid'); ?>">Cancel <i class="fa fa-times"></i></a>
                     </fieldset>
                 </form>
             </div>

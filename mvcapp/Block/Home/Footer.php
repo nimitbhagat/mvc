@@ -7,11 +7,11 @@ use Mage;
 
 Mage::loadClassByFileName('Block\Core\Template');
 
-class Home extends \Block\Core\Template
+class Footer extends \Block\Core\Template
 {
 
     public function __construct()
     {
-        $this->setTemplate('./home/home.php');
+        $this->setTemplate('./home/footer.php');
     }
 }

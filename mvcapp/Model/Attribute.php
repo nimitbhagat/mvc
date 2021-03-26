@@ -28,7 +28,7 @@ class Attribute extends Table
     public function getInputTypeOption()
     {
         return [
-            'textbox' => 'Textbox',
+            'text' => 'Textbox',
             'textarea' => 'Textarea',
             'select' => 'Select',
             'multiple' => 'Select Multiple',
@@ -43,5 +43,16 @@ class Attribute extends Table
             'product' => 'Product',
             'category' => 'Category'
         ];
+    }
+
+    public function getOptions()
+    {
+        if (!$this->attributeId) {
+            return false;
+        }
+
+        return $options = Mage::getModel($this->backendModel)
+            ->setAttribute($this)
+            ->getOptions();
     }
 }
