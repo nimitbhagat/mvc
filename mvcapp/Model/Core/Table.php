@@ -97,16 +97,27 @@ class Table
 
             return $this->insert($query);
         } else {
+
             $value = array_values($this->data);
             $filed = array_keys($this->data);
             $final = null;
 
             for ($i = 0; $i < count($filed); $i++) {
                 if ($filed[$i] == $this->getPrimaryKey()) {
+
                     $id = $value[$i];
                     continue;
                 }
-                $final = $final . "`" . $filed[$i] . "`='" . $value[$i] . "',";
+
+                if ($value[$i]) {
+                    $value[$i] = "'{$value[$i]}'";
+                } else {
+                    $value[$i] = "NULL";
+                }
+
+                $final = $final . "`{$filed[$i]}`={$value[$i]},";
+
+                //$final = $final . "`" . $filed[$i] . "`='" . $value[$i] . "',";
             }
             $final = rtrim($final, ",");
 
@@ -136,6 +147,16 @@ class Table
         $collection->setData($rowArray);
         unset($rowArray);
         return $collection;
+    }
+
+    public function fetchRow($query)
+    {
+        $row = $this->getAdapter()->fetchRow($query);
+        if (!$row) {
+            return false;
+        }
+        $this->data = $row;
+        return $this;
     }
 
 

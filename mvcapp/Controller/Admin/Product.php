@@ -7,7 +7,7 @@ use Exception;
 use Mage;
 use Model\Product as ModelProduct;
 
-Mage::loadClassByFileName('Controller\Core\Admin');
+//Mage::loadClassByFileName('Controller\Core\Admin');
 
 class Product extends coreAdmin
 {
@@ -80,6 +80,7 @@ class Product extends coreAdmin
             }
 
             $product->setData($productData);
+
             $product->save();
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
@@ -121,7 +122,6 @@ class Product extends coreAdmin
             }
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
-            die();
         }
         $this->redirect('grid', null, null, true);
     }

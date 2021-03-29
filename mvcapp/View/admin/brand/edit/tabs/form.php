@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="form-group col-md-10">
-                            <label for="image">CODE</label>
+                            <label for="image">UPLOAD BRAND IMAGE</label>
                             <input id="image" name="image" value="<?php echo $brand->image ?>" type="file" placeholder="BRAND IMAGE" class="validate form-control">
                         </div>
                     </div>

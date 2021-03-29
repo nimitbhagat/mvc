@@ -70,6 +70,8 @@
                                     </th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('form', NULL, ['id' => $value->productId]); ?>"><i class="fa fa-pencil btn-info btn"></i></a></th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('delete', NULL, ['id' => $value->productId]); ?>"><i class="fa fa-trash btn-danger btn"></i></a></th>
+                                    <th><a href="<?php echo $this->getUrl()->getUrl('addItemToCart', 'admin\cart', ['id' => $value->productId]); ?>"><i class="fa fa-shopping-cart btn"></i></a></th>
+
                                 </tr>
                         <?php }
                         } ?>

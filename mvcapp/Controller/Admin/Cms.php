@@ -117,7 +117,6 @@ class Cms extends \Controller\Core\Admin
             }
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
-            // die();
         }
         $this->redirect('grid', null, null, true);
     }

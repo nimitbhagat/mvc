@@ -6,7 +6,7 @@
                 <div class="sidebar-widget">
                     <div class="row">
                         <h3 class="section-title ">Shop by</h3>
-                        <a href="#" class="lnk btn btn-primary">Show Now</a>
+                        <button type="submit" class="lnk btn btn-primary col-md-12"><i class="fa fa-filter"></i> Apply Filter </button>
                     </div>
 
                     <div class="sidebar-widget-body">
@@ -25,19 +25,29 @@
                                 </div>
                             </div>
                             <!-- ============================================== PRICE SILDER : END ============================================== -->
+                            <?php foreach ($this->getAttributes()->getData() as $key => $attribute) : ?>
+                                <div class="sidebar-widget">
+                                    <div class="widget-header">
+                                        <h4 class="widget-title"><?php echo $attribute->name; ?></h4>
+                                    </div>
+                                    <?php $options = $this->getFilters($attribute); ?>
+                                    <?php if ($options) : ?>
 
-                            <!-- ============================================== MANUFACTURES ============================================== -->
-                            <div class="sidebar-widget">
-                                <div class="widget-header">
-                                    <h4 class="widget-title">Manufactures</h4>
+                                        <?php foreach ($options->getData() as $key => $option) : ?>
+                                            <!-- ============================================== MANUFACTURES ============================================== -->
+
+                                            <div class="sidebar-widget-body">
+                                                <ul class="list">
+                                                    <li><input type="checkbox" name="<?php echo $attribute->name; ?>[<?php echo $option->name; ?>]" id=""> <?php echo $option->name; ?></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- ============================================== MANUFACTURES END ============================================== -->
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="sidebar-widget-body">
-                                    <ul class="list">
-                                        <li><input type="checkbox" name="" id=""> Forever 18</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- ============================================== MANUFACTURES END ============================================== -->
+                            <?php endforeach; ?>
+
                         </div>
                     </div>
 
