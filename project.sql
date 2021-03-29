@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2021 at 10:12 AM
+-- Generation Time: Mar 30, 2021 at 01:15 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -149,6 +149,74 @@ INSERT INTO `brand` (`brandId`, `name`, `image`, `status`, `sortOrder`, `created
 (43, 'Aspenhome', 'Aspenhome.png', 1, 0, '2021-03-25 00:27:13'),
 (44, 'Bernards', 'Bernards.png', 1, 0, '2021-03-25 00:27:35'),
 (45, 'Bobby Berk', 'Bobby Berk.png', 1, 0, '2021-03-25 00:27:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `cartId` int(11) NOT NULL,
+  `customerId` int(11) DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `discount` int(11) NOT NULL,
+  `paymentMethodId` int(11) DEFAULT NULL,
+  `shippingMethodId` int(11) DEFAULT NULL,
+  `shippingAmount` decimal(10,2) NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `sessionId` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cartId`, `customerId`, `total`, `discount`, `paymentMethodId`, `shippingMethodId`, `shippingAmount`, `createdDate`, `sessionId`) VALUES
+(6, 8, '0.00', 0, NULL, NULL, '0.00', '2021-03-30 00:21:31', 'rli930ns2lk2lva20j9atokcg7');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cartaddress`
+--
+
+CREATE TABLE `cartaddress` (
+  `cartAddressId` int(11) NOT NULL,
+  `cartId` int(11) DEFAULT NULL,
+  `addressId` int(11) DEFAULT NULL,
+  `addressType` enum('billing','shipping') NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `zip` varchar(6) NOT NULL,
+  `sameAsBilling` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cartitem`
+--
+
+CREATE TABLE `cartitem` (
+  `cartItemId` int(11) NOT NULL,
+  `cartId` int(11) DEFAULT NULL,
+  `productId` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `basePrice` decimal(10,2) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` int(11) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cartitem`
+--
+
+INSERT INTO `cartitem` (`cartItemId`, `cartId`, `productId`, `quantity`, `basePrice`, `price`, `discount`, `createdDate`) VALUES
+(1, 6, 1, 4, '0.00', '1600.00', 0, '2021-03-30 00:31:54'),
+(2, 6, 2, 3, '0.00', '20000.00', 0, '2021-03-30 00:36:06');
 
 -- --------------------------------------------------------
 
@@ -304,7 +372,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdDate`, `updatedDate`, `categoryId`, `Brand`, `Color`, `material`) VALUES
-(1, 'n-110', 'Nokia 1100', 1600, 0, 1, '', 1, '2021-03-24 10:10:39', '2021-03-24 11:56:42', 6, '', 'Green', 'Leather');
+(1, 'n-110', 'Nokia 1100', 1500, 0, 1, '', 1, '2021-03-24 10:10:39', '2021-03-30 12:45:26', 6, '', 'Green', 'Leather'),
+(2, 'MG5+', 'Moto G5s+', 14000, 0, 1, '', 1, '2021-03-30 00:36:02', '2021-03-30 12:52:27', NULL, NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -418,6 +487,31 @@ ALTER TABLE `brand`
   ADD PRIMARY KEY (`brandId`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cartId`),
+  ADD KEY `cart_ibfk_1` (`customerId`),
+  ADD KEY `cart_ibfk_2` (`paymentMethodId`),
+  ADD KEY `cart_ibfk_3` (`shippingMethodId`);
+
+--
+-- Indexes for table `cartaddress`
+--
+ALTER TABLE `cartaddress`
+  ADD PRIMARY KEY (`cartAddressId`),
+  ADD KEY `cartaddress_ibfk_1` (`addressId`),
+  ADD KEY `cartaddress_ibfk_2` (`cartId`);
+
+--
+-- Indexes for table `cartitem`
+--
+ALTER TABLE `cartitem`
+  ADD PRIMARY KEY (`cartItemId`),
+  ADD KEY `cartId` (`cartId`),
+  ADD KEY `productId` (`productId`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -513,6 +607,24 @@ ALTER TABLE `brand`
   MODIFY `brandId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `cartaddress`
+--
+ALTER TABLE `cartaddress`
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cartitem`
+--
+ALTER TABLE `cartitem`
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
@@ -546,7 +658,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `productmedia`
@@ -581,6 +693,28 @@ ALTER TABLE `address`
 --
 ALTER TABLE `attribute_option`
   ADD CONSTRAINT `attribute_option_ibfk_1` FOREIGN KEY (`attributeId`) REFERENCES `attribute` (`attributeId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customer` (`customerId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`paymentMethodId`) REFERENCES `payment` (`paymentId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`shippingMethodId`) REFERENCES `shipping` (`shippingId`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cartaddress`
+--
+ALTER TABLE `cartaddress`
+  ADD CONSTRAINT `cartaddress_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `address` (`addressId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cartaddress_ibfk_2` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cartitem`
+--
+ALTER TABLE `cartitem`
+  ADD CONSTRAINT `cartitem_ibfk_1` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `cartitem_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `category`
