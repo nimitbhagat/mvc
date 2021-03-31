@@ -4912,6 +4912,21 @@ header {
     border-radius: 5px
 }
 
+.single-product .product-info .quantity-container .cart-quantity .quant-input select {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    font-size: 15px;
+    height: 45px;
+    left: 0;
+    padding: 0 20px 0 18px;
+    position: absolute;
+    top: 0;
+    width: 80px;
+    z-index: 1;
+    border-radius: 5px
+}
+
 .single-product .product-info .product-social-link .social-label {
     font-size: 15px;
     font-family: 'Open Sans', sans-serif;

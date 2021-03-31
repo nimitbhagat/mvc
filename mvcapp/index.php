@@ -1,5 +1,6 @@
 <?php
 
+
 spl_autoload_register(__NAMESPACE__ . "\Mage::loadClassByFileName");
 
 class Mage

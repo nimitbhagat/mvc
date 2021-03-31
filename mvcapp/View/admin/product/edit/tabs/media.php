@@ -11,6 +11,8 @@
                         <div class="text-right">
                             <button class="btn btn-info" type="submit" name="update">Update <i class="fa fa-pencil"></i></button>
                             <button class="btn btn-danger" type="submit" name="delete">Delete <i class="fa fa-trash"></i></button>
+                            <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid', null, null, true); ?>">Cancel <i class="fa fa-times"></i></a>
+
                         </div>
 
                         <div class="table-responsive">
@@ -96,7 +98,7 @@
                 <div class="row">
 
                     <div class="form-group col-md-10">
-                        <input type="file" class="form-control-file" id="uploadMedia" name="image">
+                        <input type="file" class="form-control-file" id="uploadMedia" name="image[]" multiple>
                     </div>
                     <div class="input-group-append">
                         <button class="btn btn-primary btn-sm" type="submit" name="add">UPLOAD <i class="fa fa-upload"></i></button>

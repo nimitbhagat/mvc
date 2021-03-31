@@ -54,6 +54,7 @@ class Product extends coreAdmin
                 $this->getMessage()->setSuccess("Product Inserted SuccessFully !!");
             } else {
                 $product =  $product->load($productId);
+
                 if (!$product) {
                     throw new Exception("Data Not Found", 1);
                 }
@@ -73,6 +74,7 @@ class Product extends coreAdmin
                 }
             }
 
+
             if (!array_key_exists('status', $productData)) {
                 $productData['status'] = 0;
             } else {
@@ -87,6 +89,25 @@ class Product extends coreAdmin
         }
         $this->redirect('grid', null, [], true);
     }
+
+    public function saveCategoryAction()
+    {
+        try {
+            $product = Mage::getModel("Model\Product");
+            if (!$this->getRequest()->isPost()) {
+                throw new Exception("Invalid Post Request", 1);
+            }
+            $productId = $this->getRequest()->getGet('id');
+            $categoryId = $this->getRequest()->getPost('product')['categoryId'];
+
+            $query = "update product set categoryId={$categoryId} where productId={$productId}";
+            $product->getAdapter()->update($query);
+        } catch (Exception $e) {
+            $this->getMessage()->setFailure($e->getMessage());
+        }
+        $this->redirect('form', null, [], false);
+    }
+
     public function changeStatusAction()
     {
         try {
@@ -113,7 +134,7 @@ class Product extends coreAdmin
 
             $id = $this->getRequest()->getGet('id');
             $delModel = Mage::getModel('Model\Product');
-            $delModel->id = $id;
+            $delModel->productId = $id;
             $delModel->delete();
             if ($delModel->delete()) {
                 $this->getMessage()->setSuccess("Product Deleted SuccessFully !!");

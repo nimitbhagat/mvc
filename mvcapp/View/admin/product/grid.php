@@ -1,4 +1,29 @@
 <?php $pager = $this->pagination()->getPager(); ?>
+<style>
+    #module {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    #module p.collapse[aria-expanded="false"] {
+        display: block;
+        height: 3rem !important;
+        overflow: hidden;
+    }
+
+    #module p.collapse.show[aria-expanded="false"] {
+        height: 3rem !important;
+    }
+
+    #module a.collapsed:after {
+        content: '+ Show More';
+    }
+
+    #module a:not(.collapsed):after {
+        content: '- Show Less';
+    }
+</style>
+
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-lg-8 col-md-7 col-sm-6">
@@ -18,6 +43,7 @@
                     <thead>
                         <tr>
                             <th>SKU</th>
+                            <th>Category Id</th>
                             <th>Product Name</th>
                             <th>Price</th>
                             <th>Discount</th>
@@ -49,6 +75,7 @@
                             ?>
                                 <tr id="txtData" class="<?php echo ($value->status == 1) ? "" : "table-danger"; ?>">
                                     <td><?php echo $value->sku; ?></td>
+                                    <td><?php echo $value->categoryId; ?></td>
                                     <td><?php echo $value->name; ?></td>
                                     <td><?php echo $value->price ?></td>
                                     <td><?php echo $value->discount ?></td>
@@ -70,8 +97,6 @@
                                     </th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('form', NULL, ['id' => $value->productId]); ?>"><i class="fa fa-pencil btn-info btn"></i></a></th>
                                     <th><a href="<?php echo $this->getUrl()->getUrl('delete', NULL, ['id' => $value->productId]); ?>"><i class="fa fa-trash btn-danger btn"></i></a></th>
-                                    <th><a href="<?php echo $this->getUrl()->getUrl('addItemToCart', 'admin\cart', ['id' => $value->productId]); ?>"><i class="fa fa-shopping-cart btn"></i></a></th>
-
                                 </tr>
                         <?php }
                         } ?>

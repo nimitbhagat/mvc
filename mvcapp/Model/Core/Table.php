@@ -110,6 +110,7 @@ class Table
                 }
 
                 if ($value[$i]) {
+                    $value[$i] = $this->getAdapter()->getEscapeSequence($value[$i]);
                     $value[$i] = "'{$value[$i]}'";
                 } else {
                     $value[$i] = "NULL";
@@ -216,8 +217,7 @@ class Table
     public function delete($query = null)
     {
         if (!$query) {
-
-            $id = $this->data['id'];
+            $id = $this->data[$this->getPrimaryKey()];
             $query = "delete from {$this->getTableName()} where {$this->getPrimaryKey()} = {$id}";
         }
         $row = $this->getAdapter()->delete($query);

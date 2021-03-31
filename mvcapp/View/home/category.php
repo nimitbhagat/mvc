@@ -17,7 +17,10 @@ $categories = $this->getCategories();
                             </li>
                             <?php foreach ($categories->getData() as $key => $parentCategory) : ?>
                                 <?php if (!$parentCategory->parentId) : ?>
-                                    <li class="dropdown yamm mega-menu"> <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown"><?php echo $parentCategory->name; ?></a>
+                                    <li class="dropdown yamm mega-menu">
+                                        <a href="" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">
+                                            <?php echo $parentCategory->name; ?>
+                                        </a>
                                         <ul class="dropdown-menu container">
                                             <li>
                                                 <div class="yamm-content">
@@ -25,15 +28,11 @@ $categories = $this->getCategories();
                                                         <?php foreach ($categories->getData() as $key => $subCategory) : ?>
                                                             <?php if ($subCategory->parentId == $parentCategory->categoryId) : ?>
                                                                 <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                                                                    <h2 class="title"><?php echo $subCategory->name; ?></h2>
+                                                                    <h2 class="title">
+                                                                        <a href="<?php echo $this->getUrl()->getUrl('grid', null, ['categoryId' => $subCategory->categoryId]); ?>"><?php echo $subCategory->name; ?></a>
+                                                                    </h2>
                                                                     <ul class="links">
                                                                         <li><a href="#">Dresses</a></li>
-                                                                        <li><a href="#">Shoes </a></li>
-                                                                        <li><a href="#">Jackets</a></li>
-                                                                        <li><a href="#">Sunglasses</a></li>
-                                                                        <li><a href="#">Sport Wear</a></li>
-                                                                        <li><a href="#">Blazers</a></li>
-                                                                        <li><a href="#">Shirts</a></li>
                                                                     </ul>
                                                                 </div>
                                                             <?php endif; ?>

@@ -89,6 +89,7 @@ class Adapter
 			$this->connection();
 		}
 		$result = mysqli_query($this->getConnect(), $query);
+
 		if ($result > 0) {
 			return true;
 		}
@@ -145,5 +146,10 @@ class Adapter
 			return false;
 		}
 		return true;
+	}
+
+	public function getEscapeSequence($string)
+	{
+		return mysqli_real_escape_string($this->getConnect(), $string);
 	}
 }

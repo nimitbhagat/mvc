@@ -6,9 +6,8 @@ use Mage;
 use Exception;
 use \Model\Core\Table;
 
-Mage::loadClassByFileName('\Model\Core\Table');
 
-class CartAddress extends Table
+class CartAddress extends \Model\Core\Table
 {
     const ADDRESS_TYPE_BILLING = 'billing';
     const ADDRESS_TYPE_SHIPPING = 'shipping';

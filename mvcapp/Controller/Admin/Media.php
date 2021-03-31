@@ -23,38 +23,45 @@ class Media extends \Controller\Core\Admin
 
         try {
             if (isset($_FILES['image'])) {
-                $file_name = $_FILES['image']['name'];
 
-                $file_tmp = $_FILES['image']['tmp_name'];
-                $file_type = $_FILES['image']['type'];
+                foreach ($_FILES['image']['tmp_name'] as $key => $value) {
+                    $file_name = $_FILES['image']['name'][$key];
 
-                $tmp = explode('.', $file_name);
+                    $file_tmp = $_FILES['image']['tmp_name'][$key];
+                    $file_type = $_FILES['image']['type'][$key];
 
-                $file_ext = strtolower(end($tmp));
+                    $tmp = explode('.', $file_name);
 
-                $extensions = array("jpeg", "jpg", "png");
+                    $file_ext = strtolower(end($tmp));
 
-                if (in_array($file_ext, $extensions) === false) {
-                    throw new Exception("extension not allowed, please choose a JPEG or PNG file.");
-                }
+                    $extensions = array("jpeg", "jpg", "png", "webp");
 
-                $dir = './Media/images/Products/' . $this->getRequest()->getGet('id');
-
-
-
-                if (!file_exists($dir) && !is_dir($dir)) {
-                    mkdir($dir);
-                }
-
-                if (move_uploaded_file($file_tmp, "{$dir}/" . $file_name)) {
-                    //rename("./Media/images/Products/.{$file_name}", "./Media/Products/images/.{$key}");
-                    $Media = Mage::getModel("Model\Media");
-                    $Media->productId = $this->getRequest()->getGet('id');
-                    $Media->imageName = $file_name;
-                    if (!$Media->save()) {
-                        throw new Exception("Image Uploading Fail", 1);
+                    if (in_array($file_ext, $extensions) === false) {
+                        $this->getMessage()->setFailure("Some Image Uploading Fail Due To Unsupported Extension");
+                        continue;
+                        //throw new Exception("extension not allowed, please choose a WEBP,JPEG or PNG file.");
                     }
-                    $this->getMessage()->setSuccess("File Uploaded Successfully");
+
+                    $dir = './Media/images/Products/' . $this->getRequest()->getGet('id');
+
+
+
+                    if (!file_exists($dir) && !is_dir($dir)) {
+                        mkdir($dir);
+                    }
+
+                    if (move_uploaded_file($file_tmp, "{$dir}/" . $file_name)) {
+                        //rename("./Media/images/Products/.{$file_name}", "./Media/Products/images/.{$key}");
+                        $Media = Mage::getModel("Model\Media");
+                        $Media->productId = $this->getRequest()->getGet('id');
+                        $Media->imageName = $file_name;
+                        if (!$Media->save()) {
+                            $this->getMessage()->setFailure("Some Image Uploading Fail");
+                            continue;
+                            //throw new Exception("Image Uploading Fail", 1);
+                        }
+                        $this->getMessage()->setSuccess("File Uploaded Successfully");
+                    }
                 }
             }
         } catch (Exception $e) {

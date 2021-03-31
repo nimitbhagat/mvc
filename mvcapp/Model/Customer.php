@@ -14,4 +14,18 @@ class Customer extends \Model\Core\Table
         parent::__construct();
         $this->setTableName('customer')->setPrimaryKey('customerId');
     }
+
+    public function getBillingAddress()
+    {
+        $query = "select * from `address` where `addressType` = 'billing' and `customerId` = {$this->customerId}";
+        $address = \Mage::getModel('Model\CustomerAddress')->fetchRow($query);
+        return $address;
+    }
+
+    public function getShippingAddress()
+    {
+        $query = "select * from `address` where `addressType` = 'shipping' and `customerId` = {$this->customerId}";
+        $address = \Mage::getModel('Model\CustomerAddress')->fetchRow($query);
+        return $address;
+    }
 }

@@ -129,7 +129,6 @@ class Pager
             $this->setCurrentPage($this->getStart());
         }
 
-
         if ($this->getCurrentPage() == $this->getStart()) {
             $this->setPrevious(null);
             $this->setStart(1);
@@ -138,8 +137,6 @@ class Pager
             }
             return $this;
         }
-
-
 
         if ($this->getCurrentPage() == $this->getEnd()) {
             $this->setNext(null);

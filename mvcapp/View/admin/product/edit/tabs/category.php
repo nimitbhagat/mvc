@@ -2,7 +2,7 @@
     <div class="card text-left">
         <div class="card-body">
             <h4 class="card-title"></h4>
-            <form action="<?php echo $this->getUrl()->getUrl('save'); ?>" method="post">
+            <form action="<?php echo $this->getUrl()->getUrl('saveCategory'); ?>" method="post">
 
                 <fieldset>
                     <legend>
@@ -17,7 +17,7 @@
                         <?php $category = $this->getCategory()->getData(); ?>
 
                         <div class="form-group col-md-6">
-                            <label for="category">SKU</label>
+                            <label for="category">CATEGORY</label>
                             <select id="category" name="product[categoryId]" class="form-control">
                                 <option value="" disabled selected>Select Category</option>
                                 <?php foreach ($category as $id => $category) : ?>

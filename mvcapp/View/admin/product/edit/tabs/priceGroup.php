@@ -10,6 +10,8 @@
                     </legend>
                     <div class="text-right">
                         <button class="btn btn-info m-1" type="submit" name="update">Update <i class="fa fa-pencil"></i></button>
+                        <a class="btn btn-danger" href="<?php echo $this->getUrl()->getUrl('grid', null, null, true); ?>">Cancel <i class="fa fa-times"></i></a>
+
                     </div>
 
                     <div class="table-responsive">
@@ -62,6 +64,7 @@
                         </legend>
                     <?php endif; ?>
             </form>
+
             </fieldset>
         </div>
     </div>

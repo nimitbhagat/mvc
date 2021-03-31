@@ -21,7 +21,13 @@ class Cart extends \Controller\Core\Admin
 
             $cart = $this->getCart();
 
-            if ($cart->addItem($product, 1, true)) {
+            if ($this->getRequest()->isPost()) {
+                $qty = $this->getRequest()->getPost('quantity');
+            } else {
+                $qty = 1;
+            }
+
+            if ($cart->addItem($product, $qty, true)) {
                 $this->getMessage()->setSuccess('Item added to cart Successfully');
             } else {
             }
@@ -29,7 +35,11 @@ class Cart extends \Controller\Core\Admin
             $this->getMessage()->setFailure($e->getMessage());
         }
 
-        $this->redirect('grid', 'admin\product', null, false);
+        header("location:{$_SERVER['HTTP_REFERER']}");
+        //echo $_SERVER['HTTP_REFERER'];
+
+        //$this->redirect(null, null, null, true);
+        //$this->redirect('grid', 'home\grid', null, true);
     }
 
 
@@ -90,36 +100,45 @@ class Cart extends \Controller\Core\Admin
         $this->redirect('index');
     }
 
+
+
     public function checkoutAction()
     {
         $checkout = \Mage::getBlock('Block\Admin\Cart\Checkout');
-        $cart = $this->getCart();
         $layout = $this->getLayout();
-
-
-        // $checkout->setCart($cart);
-        // $layout->getChild('content')->addChild($checkout);
-        // echo $layout->toHtml();
+        $layout->setTemplate("./core/layout/one_column.php");
+        $cart = $this->getCart();
+        $checkout->setCart($cart);
+        $layout->getChild("Content")->addChild($checkout, 'Grid');
+        $this->renderLayout();
     }
-    public function DeleteAction()
+
+    public function deleteAction()
     {
         try {
-
             $id = $this->getRequest()->getGet('id');
+
             if (!$id) {
                 throw new \Exception('Id Invalid');
             }
             $item = \Mage::getModel('Model\Cart\Item');
-            $itemRow = $item->load($id)->getData()['cartItemId'];
-            if ($item->delete($itemRow)) {
-                $this->getMessage()->setSuccess('Record Deleted Successfully');
+            $item->load($id)->getData();
+            if ($item) {
+                if ($item->delete()) {
+                    $this->getMessage()->setSuccess('Record Deleted Successfully');
+                } else {
+                    $this->getMessage()->setFailure('Unable To Delete Record');
+                }
             } else {
-                $this->getMessage()->setFailure('Unable To Delete Record');
+                $this->getMessage()->setFailure('Id Not found');
             }
         } catch (\Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
-        $this->redirect('index');
+
+        header("location:{$_SERVER['HTTP_REFERER']}");
+
+        //$this->redirect('grid', 'home\home', null, true);
     }
 
     public function selectCustomerAction()
@@ -133,7 +152,6 @@ class Cart extends \Controller\Core\Admin
     public function saveAction()
     {
         try {
-            echo "<pre>";
             $shipping = $this->getRequest()->getPost('shipping');
             $billing = $this->getRequest()->getPost('billing');
             $cartId = $this->getCart()->getItems()[0]->cartId;

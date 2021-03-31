@@ -16,17 +16,18 @@ class Category extends Template
 
     public function getCategory()
     {
-
         $categoryModel = Mage::getModel('Model\Category');
 
         $query = "select `categoryId`,`name` from `category`";
         return $this->categoryOptions = $categoryModel->fetchAll($query);
     }
 
+
     public function checkCategory($id)
     {
+        $productId = $this->getRequest()->getGet('id');
         $productModel = Mage::getModel('Model\Product');
-        $query = "select `productId` from `product` where categoryId='{$id}'";
+        $query = "select `productId` from `product` where categoryId='{$id}' and productId={$productId}";
 
         $id = $productModel->getAdapter()->fetchRow($query);
 

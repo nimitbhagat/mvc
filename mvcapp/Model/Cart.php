@@ -74,7 +74,7 @@ class Cart extends Table
 
         $billingAddress = Mage::getModel('Model\Cart\CartAddress');
 
-        $query = "SELECT * FROM `cart_address` 
+        $query = "SELECT * FROM `cartaddress` 
         WHERE `cartId` = '{$this->cartId}' AND `addressType`='" . \Model\Cart\CartAddress::ADDRESS_TYPE_BILLING . "'";
 
         $billingAddress = $billingAddress->fetchRow($query);
@@ -98,7 +98,7 @@ class Cart extends Table
             return false;
         }
 
-        $query = "SELECT * FROM `cart_address` 
+        $query = "SELECT * FROM `cartaddress` 
         WHERE `cartId` = '{$this->cartId}' AND `addressType`='Shipping'";
 
         $shippingAddress = Mage::getModel('Model\Cart\CartAddress')->getAdapter()->fetchRow($query);
@@ -144,6 +144,7 @@ class Cart extends Table
         $cartItem = Mage::getModel('Model\Cart\Item')->fetchRow($query);
         if ($cartItem) {
             $cartItem->quantity += $quantity;
+            $cartItem->basePrice = ($cartItem->quantity * $cartItem->price);
             $cartItem->save();
             return true;
         }
@@ -155,6 +156,7 @@ class Cart extends Table
         $cartItem->quantity = $quantity;
         $cartItem->discount = $product->discount;
         $cartItem->createdDate = date('Y-m-d H:i:s');
+        $cartItem->basePrice = ($cartItem->quantity * $cartItem->price);
 
         $cartItem->save();
         return true;
