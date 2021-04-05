@@ -49,6 +49,12 @@ class Admin
         return $this->request;
     }
 
+    public function redirectToPrevious()
+    {
+        header("location:{$_SERVER['HTTP_REFERER']}");
+        exit();
+    }
+
     public function redirect($actionName = NULL, $controllerName = NULL, $params = NULL, $resetParams = false)
     {
 
@@ -83,7 +89,7 @@ class Admin
         return "http://localhost/mvcapp/index.php?{$queryString}";
     }
 
-    
+
 
     public function setMessage()
     {

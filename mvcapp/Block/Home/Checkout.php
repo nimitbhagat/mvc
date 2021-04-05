@@ -38,13 +38,13 @@ class Checkout extends \Block\Core\Template
     {
 
         $cartBillingAddress = $this->getCart()->getBillingAddress();
+
         if ($cartBillingAddress) {
             return $cartBillingAddress;
         }
 
         $billingAddress = $this->getCart()->getCustomer()->getBillingAddress();
-        echo "<pre>";
-        \print_r($billingAddress);
+
 
         if ($billingAddress) {
             $cartAddress = \Mage::getModel('Model\Cart\CartAddress');
@@ -84,10 +84,34 @@ class Checkout extends \Block\Core\Template
             $cartAddress->zipcode = $shippingAddress->zipcode;
             $cartAddress->cartId = $this->getCart()->getItems()->getData()[0]->cartId; //---
             $cartAddress->save();
-
             return $cartAddress;
         }
 
         return Null;
+    }
+
+    public function getCountries()
+    {
+        return ["INDIA", "USA", "JAPAN", "SINGAPORE", "CANADA"];
+    }
+
+    public function getCities()
+    {
+        return ["VALSAD", "VAPI", "SURAT", "AHMEDABAD", "VADODARA"];
+    }
+
+    public function getStates()
+    {
+        return ["GUJARAT", "MAHARASHTRA", "GOA", "RAJASTHAN", "MADHYAPRADESH"];
+    }
+
+    public function getPaymentMethods()
+    {
+        return Mage::getModel('\Model\Payment')->fetchAll();
+    }
+
+    public function getShippingMethods()
+    {
+        return Mage::getModel('\Model\Shipment')->fetchAll();
     }
 }

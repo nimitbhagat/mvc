@@ -49,22 +49,25 @@ class Home extends CoreAdmin
 
     public function checkoutAction()
     {
-        // $checkout = \Mage::getBlock('Block\Admin\Cart\Checkout');
-        // $layout = $this->getLayout();
-        // $layout->setTemplate("./core/layout/one_column.php");
-        // $checkout->setCart($cart);
-        // $layout->getChild("Content")->addChild($checkout, 'Grid');
-        // $this->renderLayout();
+        try {
+            $cart = $this->getCart();
 
-        $this->getLayout()->setTemplate("./core/layout/home/index.php");
+            if (!$cart->getItems()) {
+                throw new Exception("No Item In Cart", 1);
+            }
 
-        $checkout = Mage::getBlock("Block\Home\Checkout");
-        $this->getLayout()->getChild("Content")->addChild($checkout, 'Checkout');
+            $this->getLayout()->setTemplate("./core/layout/home/index.php");
 
-        $cart = $this->getCart();
-        $checkout->setCart($cart);
+            $checkout = Mage::getBlock("Block\Home\Checkout");
+            $this->getLayout()->getChild("Content")->addChild($checkout, 'Checkout');
 
-        $this->renderLayout();
+            $checkout->setCart($cart);
+
+            $this->renderLayout();
+        } catch (Exception $e) {
+            $this->getMessage()->setFailure($e->getMessage());
+            $this->redirectToPrevious();
+        }
     }
 
     protected function getCart($customerId = NULL)

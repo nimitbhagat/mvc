@@ -175,6 +175,20 @@
 <script src="./Skin/customer/assets/js/bootstrap-select.min.js"></script>
 <script src="./Skin/customer/assets/js/wow.min.js"></script>
 <script src="./Skin/customer/assets/js/scripts.js"></script>
+
+<script>
+    if (document.getElementsByName('failureMessage')[0]) {
+        document.getElementsByName('failureMessage')[0].click();
+    };
+    if (document.getElementsByName('successMessage')[0]) {
+        document.getElementsByName('successMessage')[0].click();
+    };
+    setTimeout(() => {
+        if (document.getElementsByName('close')[0]) {
+            document.getElementsByName('close')[0].click();
+        }
+    }, 1500);
+</script>
 </body>
 
 </html>

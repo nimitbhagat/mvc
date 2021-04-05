@@ -39,7 +39,7 @@
         <div class="card text-white bg-dark mb-12">
             <div class="card-body">
                 <h4 class="card-title"><?php echo $this->getTitle(); ?></h4>
-                <table class="table table-hover table-striped table-dark">
+                <table class="table table-hover table-striped table-dark table-responsive">
                     <thead>
                         <tr>
                             <th>SKU</th>
@@ -48,7 +48,7 @@
                             <th>Price</th>
                             <th>Discount</th>
                             <th>Quantity</th>
-                            <th>Description</th>
+                            <!-- <th>Description</th> -->
                             <th>Status</th>
                             <th>Created At</th>
                             <th colspan="3">Action</th>
@@ -80,7 +80,7 @@
                                     <td><?php echo $value->price ?></td>
                                     <td><?php echo $value->discount ?></td>
                                     <td><?php echo $value->quantity ?></td>
-                                    <td><?php echo $value->description ?></td>
+                                    <!-- <td><?php echo $value->description ?></td> -->
                                     <td><?php
                                         if ($value->status) {
                                             echo 'Enabled';

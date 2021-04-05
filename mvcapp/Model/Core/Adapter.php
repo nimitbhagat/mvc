@@ -26,11 +26,14 @@ class Adapter
 	}
 	public function getConnect()
 	{
+		if (!$this->connect) {
+			$connect = new mysqli($this->config['host'], $this->config['username'], $this->config['password'], $this->config['database']);
+			$this->setConnect($connect);
+		}
 		return $this->connect;
 	}
 	public function setConnect(mysqli $connect)
 	{
-
 		$this->connect = $connect;
 		return $this;
 	}
@@ -148,8 +151,12 @@ class Adapter
 		return true;
 	}
 
-	public function getEscapeSequence($string)
+	public function getEscapeSequence($string = null)
 	{
+		if (!$string) {
+			return null;
+		}
+
 		return mysqli_real_escape_string($this->getConnect(), $string);
 	}
 }

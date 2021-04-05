@@ -76,6 +76,12 @@ class Table
         return $this;
     }
 
+    public function __unset($name)
+    {
+        unset($this->data[$name]);
+        return $this;
+    }
+
     public function __get($name)
     {
         if (!array_key_exists($name, $this->data)) {
@@ -178,10 +184,13 @@ class Table
         return true;
     }
 
-    public function load($value)
+    public function load($value, $key = null)
     {
-
         $value = (int)$value;
+
+        if ($key) {
+            $query = "select * from `{$this->getTableName()}` where `{$key}` = {$value}";
+        }
 
         $query = "select * from `{$this->getTableName()}` where `{$this->getPrimaryKey()}` = {$value}";
 

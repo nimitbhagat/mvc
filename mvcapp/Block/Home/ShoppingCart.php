@@ -70,4 +70,14 @@ class ShoppingCart extends \Block\Core\Template
         $query = "select count(cartid) as `count` from `cartitem` where `cartId`='{$this->getCart()['cartId']}'";
         return $cartItem->getAdapter()->fetchRow($query)['count'];
     }
+
+    public function getMedia($id)
+    {
+        $query = "select * from productmedia where small=1 and productId={$id}";
+
+        if ($media = Mage::getModel('Model\Product')->fetchRow($query)) {
+            return $media->getData();
+        }
+        return false;
+    }
 }

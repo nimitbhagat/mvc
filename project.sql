@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2021 at 01:15 AM
+-- Generation Time: Apr 05, 2021 at 04:09 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -45,8 +45,8 @@ CREATE TABLE `address` (
 INSERT INTO `address` (`addressId`, `customerId`, `address`, `city`, `state`, `zipcode`, `country`, `addressType`) VALUES
 (12, 12, 'asdf', 'VALSAD', 'GUJARAT', '123456', 'INDIA', 'Billing'),
 (13, 12, 'Rashmi Society', 'VALSAD', 'GUJARAT', '123456', 'INDIA', 'Shipping'),
-(14, 8, 'Rashmi Society', 'VALSAD', 'GUJARAT', '396125', 'INDIA', 'Billing'),
-(15, 8, 'Rashmi Society', 'VALSAD', 'GUJARAT', '396125', 'INDIA', 'Shipping');
+(15, 8, 'Rashmi Society', 'VALSAD', 'GUJARAT', '396001', 'INDIA', 'Shipping'),
+(26, 8, 'Damni Zampa', 'VALSAD', 'GUJARAT', '396125', 'INDIA', 'Billing');
 
 -- --------------------------------------------------------
 
@@ -160,7 +160,7 @@ CREATE TABLE `cart` (
   `cartId` int(11) NOT NULL,
   `customerId` int(11) DEFAULT NULL,
   `total` decimal(10,2) NOT NULL,
-  `discount` int(11) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
   `paymentMethodId` int(11) DEFAULT NULL,
   `shippingMethodId` int(11) DEFAULT NULL,
   `shippingAmount` decimal(10,2) NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cartId`, `customerId`, `total`, `discount`, `paymentMethodId`, `shippingMethodId`, `shippingAmount`, `createdDate`, `sessionId`) VALUES
-(6, 8, '0.00', 0, NULL, NULL, '0.00', '2021-03-30 00:21:31', 'rli930ns2lk2lva20j9atokcg7');
+(6, 8, '1495.74', '0.00', 4, 1, '5000.00', '2021-03-30 00:21:31', 'rli930ns2lk2lva20j9atokcg7');
 
 -- --------------------------------------------------------
 
@@ -185,13 +185,22 @@ CREATE TABLE `cartaddress` (
   `cartAddressId` int(11) NOT NULL,
   `cartId` int(11) DEFAULT NULL,
   `addressId` int(11) DEFAULT NULL,
-  `addressType` enum('billing','shipping') NOT NULL,
+  `address` text NOT NULL,
+  `addressType` enum('Billing','Shipping') NOT NULL,
   `city` varchar(50) NOT NULL,
   `state` varchar(50) NOT NULL,
   `country` varchar(50) NOT NULL,
-  `zip` varchar(6) NOT NULL,
+  `zipcode` varchar(6) NOT NULL,
   `sameAsBilling` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cartaddress`
+--
+
+INSERT INTO `cartaddress` (`cartAddressId`, `cartId`, `addressId`, `address`, `addressType`, `city`, `state`, `country`, `zipcode`, `sameAsBilling`) VALUES
+(78, 6, 26, 'Damni Zampa', 'Billing', 'VALSAD', 'GUJARAT', 'INDIA', '396001', 0),
+(79, 6, 15, 'Damni Zampa', 'Shipping', 'VALSAD', 'GUJARAT', 'INDIA', '396001', 1);
 
 -- --------------------------------------------------------
 
@@ -206,7 +215,7 @@ CREATE TABLE `cartitem` (
   `quantity` int(11) NOT NULL,
   `basePrice` decimal(10,2) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `discount` int(11) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -215,8 +224,7 @@ CREATE TABLE `cartitem` (
 --
 
 INSERT INTO `cartitem` (`cartItemId`, `cartId`, `productId`, `quantity`, `basePrice`, `price`, `discount`, `createdDate`) VALUES
-(1, 6, 1, 4, '0.00', '1600.00', 0, '2021-03-30 00:31:54'),
-(2, 6, 2, 3, '0.00', '20000.00', 0, '2021-03-30 00:36:06');
+(36, 6, 4, 1, '2094.00', '2094.00', '28.57', '2021-04-05 11:12:44');
 
 -- --------------------------------------------------------
 
@@ -274,6 +282,49 @@ INSERT INTO `cms_page` (`pageId`, `title`, `identifier`, `content`, `status`, `C
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `config`
+--
+
+CREATE TABLE `config` (
+  `configId` int(11) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config`
+--
+
+INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createdDate`) VALUES
+(2, 1, 'Nimit', 'Bhagat', 'Suryakant', '2021-04-05 14:50:59'),
+(3, 1, 'Hemil', 'Bhagat', 'Mahendra', '2021-04-05 14:50:59');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_group`
+--
+
+CREATE TABLE `config_group` (
+  `groupId` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `createdDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config_group`
+--
+
+INSERT INTO `config_group` (`groupId`, `name`, `createdDate`) VALUES
+(1, 'Customer', '2021-04-05 12:07:30'),
+(2, 'Admin', '2021-04-05 12:07:35');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -323,6 +374,67 @@ INSERT INTO `customergroup` (`groupId`, `name`, `status`, `createdDate`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orderaddress`
+--
+
+CREATE TABLE `orderaddress` (
+  `orderAddressId` int(11) NOT NULL,
+  `addressId` int(11) DEFAULT NULL,
+  `address` text NOT NULL,
+  `addressType` enum('billing','shipping') NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `zipcode` varchar(6) NOT NULL,
+  `sameAsBilling` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderdetails`
+--
+
+CREATE TABLE `orderdetails` (
+  `orderId` int(11) NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `customerFirstName` varchar(50) NOT NULL,
+  `customerLastName` varchar(50) NOT NULL,
+  `customerEmail` varchar(255) NOT NULL,
+  `customerContact` varchar(15) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `paymentMethodId` int(11) NOT NULL,
+  `paymentName` varchar(255) NOT NULL,
+  `paymentCode` varchar(255) NOT NULL,
+  `shippingMethodId` int(11) NOT NULL,
+  `shippingName` varchar(255) NOT NULL,
+  `shippingCode` varchar(255) NOT NULL,
+  `shippingAmount` decimal(10,2) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderitems`
+--
+
+CREATE TABLE `orderitems` (
+  `orderItemId` int(11) NOT NULL,
+  `orderDetailId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `productName` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `basePrice` decimal(10,2) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment`
 --
 
@@ -330,7 +442,7 @@ CREATE TABLE `payment` (
   `paymentId` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
-  `amount` float NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp()
@@ -341,8 +453,8 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`paymentId`, `name`, `code`, `amount`, `description`, `status`, `createdDate`) VALUES
-(2, 'Debit Card', '60382dbae258f8.30414610', 4000, '  ABC', 1, '2021-02-26 04:37:38'),
-(4, 'Net Banking', '65498416', 5000, 'ICICI BANK', 1, '2021-03-07 00:30:39');
+(2, 'Debit Card', '60382dbae258f8.30414610', '4000.00', '  ABC', 1, '2021-02-26 04:37:38'),
+(4, 'Net Banking', '65498416', '5000.00', 'ICICI BANK', 1, '2021-03-07 00:30:39');
 
 -- --------------------------------------------------------
 
@@ -354,10 +466,10 @@ CREATE TABLE `product` (
   `productId` int(11) NOT NULL,
   `sku` varchar(50) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `price` int(11) NOT NULL,
-  `discount` int(11) NOT NULL DEFAULT 0,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `quantity` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `status` tinyint(1) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp(),
   `updatedDate` datetime NOT NULL,
@@ -372,8 +484,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productId`, `sku`, `name`, `price`, `discount`, `quantity`, `description`, `status`, `createdDate`, `updatedDate`, `categoryId`, `Brand`, `Color`, `material`) VALUES
-(1, 'n-110', 'Nokia 1100', 1500, 0, 1, '', 1, '2021-03-24 10:10:39', '2021-03-30 12:45:26', 6, '', 'Green', 'Leather'),
-(2, 'MG5+', 'Moto G5s+', 14000, 0, 1, '', 1, '2021-03-30 00:36:02', '2021-03-30 12:52:27', NULL, NULL, '', '');
+(4, 'B720-57-54-96', 'Birlanny Silver Queen Upholstered Panel Bed', '2094.00', '28.57', 20, 'Part of Birlanny Collection\r\nCrafted from ash swirl and birch veneers and select hardwood solids\r\nSilver toned finish\r\nSubtle glazing effects\r\nLarge and integrated bracket feet\r\nSturdy foundation\r\nMirrored framing elements\r\nDeep carved moulding\r\nShapely, folded and crystal look\r\nButton tufted upholstered panels in a silver color faux leather\r\nTraditional bail and backplate\r\nOptional nightstand\r\nBed is available in Queen, King & Cal. King sizes\r\nGrace your room with the opulence of the birlanny bed. Carved mouldings curving around the top and bottom along with fluted pilasters and a traditional silvertone finish create elegance.', 1, '2021-03-31 19:12:37', '2021-03-31 08:11:34', 4, NULL, 'Red', 'Leather'),
+(5, 'B733-77-74-98', 'Lettner Light Gray Queen Sleigh Bed', '1109.00', '29.52', 5, 'Part of Lettner Collection from Ashley\r\nCrafted fom select birch veneers and hardwood solids\r\nBurnished light gray finish\r\nStorage footboard\r\nOptional Nightstand\r\nRequired slat rolls\r\nBox Spring Not Required\r\nBed is Available in Queen, King & Cal. King Sizes', 1, '2021-03-31 19:38:32', '2021-03-31 07:55:21', 4, NULL, 'Blue', 'Wood'),
+(7, 'B733-92', 'Lettner Light Gray 2 Drawer Nightstand', '649.00', '20.00', 5, 'Made of veneers, wood and engineered wood\r\nSilvertone patina hardware\r\n2 smooth-gliding drawers with dovetail construction\r\nTop drawer felt-lined\r\n1 felt-lined pull-out tray\r\nSmall Space Solution\r\nMade with select Birch veneers and hardwood solids. Burnished light gray finish. Drawers feature a silver-tone patina color knob and back plate. Dovetail drawer construction. Drawer interior with color finish. Ball bearing drawer glide. Felt drawer bottoms on select drawers. Beveled mirror. Both the sleigh headboards (77/78) or panel headboards (57/58) can use either storage footboards (74/98 and 76/99) and panel footboards (54/96 and 56/97). Choose from a timeless storage sleigh bed design, offered in twin or full size. The twin over full bunk bed has underbed storage.\r\n\r\nSatisfying your taste for tradition, this nightstand sports serene sophistication. Forever classic design details\"inlaid panels, silvertone patina hardware and bun feet\"are so easy to love. Burnished light gray finish elevates the look with modern sensibility. Two roomy drawers keep bedside odds and ends within easy reach.', 1, '2021-03-31 22:02:51', '2021-03-31 10:03:31', 5, NULL, 'Brown', 'Wood'),
+(8, 'B720-92', 'Birlanny Silver 2 Drawer Nightstand', '659.00', '10.00', 5, 'Made of ash and birch veneers, wood and engineered wood\r\nSilvertone finish with subtle glazing effects\r\nSilvertone hardware\r\n2 smooth-operating drawers (top drawer felt lined)\r\nSmall Space Solution\r\nMade with Ash Swirl and Birch veneers and select hardwood solids, finished in a silver toned color with subtle glazing effects to bring out dimension. Cases feature large mouldings that gracefully curve around the case, fluting on the pilasters and framed drawers give the case a lot of dimension. Large, integrated bracket feet give the cases a sturdy foundation. Mirrored framing elements that accent the mirror, dresser doors, headboard and footboard give this bedroom an air of elegance. Bed has deep carved moulding that captures a mirrored frame element and shapely, folded and crystal look button tufted upholstered panels in a silver color faux leather. Traditional bail and back plate hardware with faux crystal center insert in a silver toned finish with glaze application.\r\n\r\nLife is but a dream when you grace your room with this opulent nightstand. Its alluring blend of ash swirl and birch veneers is treated to a metallic silvertone finish with subtle glazing for a feel of faded elegance. Fluting on the pilasters adds rich dimension. Traditional bail and back plate hardware with faux crystal center inserts is an inspired finishing touch.', 1, '2021-03-31 22:07:58', '2021-03-31 10:10:22', 5, NULL, '', 'Wood');
 
 -- --------------------------------------------------------
 
@@ -397,8 +511,33 @@ CREATE TABLE `productmedia` (
 --
 
 INSERT INTO `productmedia` (`productId`, `mediaId`, `imageName`, `label`, `small`, `thumb`, `base`, `gallery`) VALUES
-(1, 46, '41U8x8N34aL.jpg', 'abc', 0, 1, 0, 1),
-(1, 47, '41wGEmM0S4L.jpg', '123', 1, 0, 1, 1);
+(4, 56, 'b720-31-36-46-58-56-97-92-q325_2.jpg', '', 0, 0, 0, 1),
+(4, 57, 'b720-31-36-46-58-56-97-92-q326_2.jpg', '', 0, 0, 0, 1),
+(4, 58, 'b720-detail-b.jpg', '', 0, 0, 0, 1),
+(4, 59, 'b720-detail-c.jpg', '', 0, 0, 0, 1),
+(4, 60, 'b720-finish_1_1.jpg', '', 0, 0, 0, 1),
+(4, 61, 'b720-mood-b.jpg', '', 0, 0, 0, 1),
+(4, 62, 'b720-mood-c.jpg', '', 0, 0, 0, 1),
+(4, 63, 'b720-mood-d.jpg', '', 1, 1, 1, 1),
+(5, 64, 'lettner-light-gray-queen-sleigh-bed_qb1223009_14.jpg', '', 1, 0, 0, 1),
+(5, 65, 'lettner-light-gray-queen-sleigh-bed_qb1223009_15.jpg', '', 0, 1, 0, 1),
+(5, 66, 'lettner-light-gray-queen-sleigh-bed_qb1223009_16.jpg', '', 0, 0, 1, 1),
+(5, 67, 'lettner-light-gray-queen-sleigh-bed_qb1223009_17.jpg', '', 0, 0, 0, 1),
+(5, 68, 'lettner-light-gray-queen-sleigh-bed_qb1223009_18.jpg', '', 0, 0, 0, 1),
+(5, 69, 'lettner-light-gray-queen-sleigh-bed_qb1223009_19.jpg', '', 0, 0, 0, 1),
+(5, 70, 'lettner-light-gray-queen-sleigh-bed_qb1223009_20.jpg', '', 0, 0, 0, 1),
+(5, 71, 'lettner-light-gray-queen-sleigh-bed_qb1223009_21.jpg', '', 0, 0, 0, 1),
+(7, 77, 'lettner-light-gray-2-drawer-nightstand_qb1222999.webp', '', 0, 0, 0, 1),
+(7, 78, 'lettner-light-gray-2-drawer-nightstand_qb1222999_1.webp', '', 1, 0, 0, 1),
+(7, 79, 'lettner-light-gray-2-drawer-nightstand_qb1222999_2.webp', '', 0, 1, 0, 1),
+(7, 80, 'lettner-light-gray-2-drawer-nightstand_qb1222999_3.webp', '', 0, 0, 1, 1),
+(7, 81, 'lettner-light-gray-2-drawer-nightstand_qb1222999_4.webp', '', 0, 0, 0, 1),
+(8, 82, 'b720-31-36-46-58-56-97-92-q325_2_1.jpg', '', 0, 0, 0, 1),
+(8, 83, 'b720-31-36-46-58-56-97-92-q326_3.jpg', '', 0, 0, 0, 1),
+(8, 84, 'b720-92.jpg', '', 0, 0, 1, 1),
+(8, 85, 'b720-92-sw.webp', '', 1, 0, 0, 1),
+(8, 86, 'b720-finish_3.jpg', '', 0, 1, 0, 1),
+(8, 87, 'b720-handle_2.jpg', '', 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -410,7 +549,7 @@ CREATE TABLE `product_customer_group_price` (
   `entityId` int(11) NOT NULL,
   `productId` int(11) DEFAULT NULL,
   `customerGroupId` int(11) DEFAULT NULL,
-  `groupPrice` int(11) NOT NULL
+  `groupPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -418,13 +557,18 @@ CREATE TABLE `product_customer_group_price` (
 --
 
 INSERT INTO `product_customer_group_price` (`entityId`, `productId`, `customerGroupId`, `groupPrice`) VALUES
-(13, NULL, 2, 49000),
-(14, NULL, 5, 39500),
-(15, NULL, NULL, 40000),
-(16, NULL, 7, 50000),
-(17, 1, 2, 1500),
-(18, 1, 5, 1600),
-(19, 1, 7, 1600);
+(20, 4, 2, '1900.00'),
+(21, 4, 5, '2000.00'),
+(22, 4, 7, '2094.00'),
+(23, 5, 2, '1000.00'),
+(24, 5, 5, '1050.00'),
+(25, 5, 7, '1109.00'),
+(26, 7, 2, '600.00'),
+(27, 7, 5, '625.00'),
+(28, 7, 7, '649.00'),
+(29, 8, 2, '600.00'),
+(30, 8, 5, '630.00'),
+(31, 8, 7, '659.00');
 
 -- --------------------------------------------------------
 
@@ -436,7 +580,7 @@ CREATE TABLE `shipping` (
   `shippingId` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
-  `amount` float NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp()
@@ -447,8 +591,8 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`shippingId`, `name`, `code`, `amount`, `description`, `status`, `createdDate`) VALUES
-(1, 'DHL', '603886a1c95674.96804890', 5000, 'courier', 1, '2021-02-25 11:14:17'),
-(3, 'Blue Dart', '6916519165', 50000, 'International', 1, '2021-03-07 01:19:20');
+(1, 'DHL', '603886a1c95674.96804890', '5000.00', 'courier', 1, '2021-02-25 11:14:17'),
+(3, 'Blue Dart', '6916519165', '50000.00', 'International', 1, '2021-03-07 01:19:20');
 
 --
 -- Indexes for dumped tables
@@ -508,8 +652,8 @@ ALTER TABLE `cartaddress`
 --
 ALTER TABLE `cartitem`
   ADD PRIMARY KEY (`cartItemId`),
-  ADD KEY `cartId` (`cartId`),
-  ADD KEY `productId` (`productId`);
+  ADD KEY `cartitem_ibfk_1` (`cartId`),
+  ADD KEY `cartitem_ibfk_2` (`productId`);
 
 --
 -- Indexes for table `category`
@@ -526,6 +670,19 @@ ALTER TABLE `cms_page`
   ADD UNIQUE KEY `identifier` (`identifier`);
 
 --
+-- Indexes for table `config`
+--
+ALTER TABLE `config`
+  ADD PRIMARY KEY (`configId`),
+  ADD KEY `groupId` (`groupId`);
+
+--
+-- Indexes for table `config_group`
+--
+ALTER TABLE `config_group`
+  ADD PRIMARY KEY (`groupId`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -537,6 +694,25 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `customergroup`
   ADD PRIMARY KEY (`groupId`);
+
+--
+-- Indexes for table `orderaddress`
+--
+ALTER TABLE `orderaddress`
+  ADD PRIMARY KEY (`orderAddressId`);
+
+--
+-- Indexes for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  ADD PRIMARY KEY (`orderId`);
+
+--
+-- Indexes for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD PRIMARY KEY (`orderItemId`),
+  ADD KEY `orderDetailId` (`orderDetailId`);
 
 --
 -- Indexes for table `payment`
@@ -563,8 +739,8 @@ ALTER TABLE `productmedia`
 --
 ALTER TABLE `product_customer_group_price`
   ADD PRIMARY KEY (`entityId`),
-  ADD KEY `productId` (`productId`),
-  ADD KEY `customerGroupId` (`customerGroupId`);
+  ADD KEY `product_customer_group_price_ibfk_1` (`productId`),
+  ADD KEY `product_customer_group_price_ibfk_2` (`customerGroupId`);
 
 --
 -- Indexes for table `shipping`
@@ -580,7 +756,7 @@ ALTER TABLE `shipping`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -610,19 +786,19 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `cartaddress`
 --
 ALTER TABLE `cartaddress`
-  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `cartitem`
 --
 ALTER TABLE `cartitem`
-  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -637,6 +813,18 @@ ALTER TABLE `cms_page`
   MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `config`
+--
+ALTER TABLE `config`
+  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `config_group`
+--
+ALTER TABLE `config_group`
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
@@ -649,6 +837,24 @@ ALTER TABLE `customergroup`
   MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `orderaddress`
+--
+ALTER TABLE `orderaddress`
+  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
@@ -658,19 +864,19 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `productmedia`
 --
 ALTER TABLE `productmedia`
-  MODIFY `mediaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `mediaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `product_customer_group_price`
 --
 ALTER TABLE `product_customer_group_price`
-  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `entityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `shipping`
@@ -713,8 +919,8 @@ ALTER TABLE `cartaddress`
 -- Constraints for table `cartitem`
 --
 ALTER TABLE `cartitem`
-  ADD CONSTRAINT `cartitem_ibfk_1` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `cartitem_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `cartitem_ibfk_1` FOREIGN KEY (`cartId`) REFERENCES `cart` (`cartId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cartitem_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `category`
@@ -723,10 +929,22 @@ ALTER TABLE `category`
   ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `category` (`categoryId`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
+-- Constraints for table `config`
+--
+ALTER TABLE `config`
+  ADD CONSTRAINT `config_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `config_group` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `customer`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`groupId`) REFERENCES `customergroup` (`groupId`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`orderDetailId`) REFERENCES `orderdetails` (`orderId`);
 
 --
 -- Constraints for table `product`
@@ -744,8 +962,8 @@ ALTER TABLE `productmedia`
 -- Constraints for table `product_customer_group_price`
 --
 ALTER TABLE `product_customer_group_price`
-  ADD CONSTRAINT `product_customer_group_price_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `product_customer_group_price_ibfk_2` FOREIGN KEY (`customerGroupId`) REFERENCES `customergroup` (`groupId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `product_customer_group_price_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_customer_group_price_ibfk_2` FOREIGN KEY (`customerGroupId`) REFERENCES `customergroup` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

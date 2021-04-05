@@ -20,10 +20,10 @@
                                    <div class="cart-item product-summary">
                                        <div class="row">
                                            <div class="col-xs-4">
-                                               <div class="image"> <a href="detail.html"><img src="./Skin/customer/assets/images/products/p4.jpg" alt=""></a> </div>
+                                               <div class="image"> <a href="<?php echo $this->getUrl()->getUrl('detail', 'home\home', ['id' => $product->productId], true); ?>"><img src="./Media/Images/Products/<?php echo $product->productId; ?>/<?php echo $this->getMedia($product->productId)['imageName']; ?>" alt=""></a> </div>
                                            </div>
                                            <div class="col-xs-7">
-                                               <h3 class="name"><a href="index8a95.html?page-detail"><?php echo $product->name; ?></a></h3>
+                                               <h3 class="name"><a href="<?php echo $this->getUrl()->getUrl('detail', 'home\home', ['id' => $product->productId], true); ?>"><?php echo $product->name; ?></a></h3>
                                                <div class="price">$<?php echo $item->price; ?> x <?php echo $item->quantity; ?></div>
                                            </div>
                                            <div class="col-xs-1 action"> <a href="<?php echo $this->getUrl()->getUrl('delete', 'admin\cart', ['id' => $item->cartItemId], false); ?>"><i class="fa fa-trash"></i></a> </div>
@@ -41,7 +41,7 @@
                            <div class="clearfix cart-total">
                                <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>$ <?php echo ($this->getTotal()) ? "{$this->getTotal()}" : "0"; ?></span> </div>
                                <div class="clearfix"></div>
-                               <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
+                               <a href="<?php echo $this->getUrl()->getUrl('checkout', 'home\home', null, true); ?>" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
                            </div>
                        </li>
                    </ul>

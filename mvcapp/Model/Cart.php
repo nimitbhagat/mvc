@@ -62,6 +62,9 @@ class Cart extends Table
 
         $query = "SELECT * FROM `cartItem` WHERE `cartId` = '{$this->cartId}'";
         $items =  Mage::getModel('Model\Cart\Item')->fetchAll($query);
+        if (!$items) {
+            return null;
+        }
         $this->setItems($items);
         return $items;
     }
@@ -75,7 +78,8 @@ class Cart extends Table
         $billingAddress = Mage::getModel('Model\Cart\CartAddress');
 
         $query = "SELECT * FROM `cartaddress` 
-        WHERE `cartId` = '{$this->cartId}' AND `addressType`='" . \Model\Cart\CartAddress::ADDRESS_TYPE_BILLING . "'";
+        WHERE `cartId` = '{$this->cartId}'
+            AND `addressType`='" . \Model\Cart\CartAddress::ADDRESS_TYPE_BILLING . "'";
 
         $billingAddress = $billingAddress->fetchRow($query);
         if (!$billingAddress) {
@@ -101,7 +105,7 @@ class Cart extends Table
         $query = "SELECT * FROM `cartaddress` 
         WHERE `cartId` = '{$this->cartId}' AND `addressType`='Shipping'";
 
-        $shippingAddress = Mage::getModel('Model\Cart\CartAddress')->getAdapter()->fetchRow($query);
+        $shippingAddress = Mage::getModel('Model\Cart\CartAddress')->fetchRow($query);
 
         $this->setShippingAddress($shippingAddress);
         return $this->shippingAddress;
@@ -160,5 +164,12 @@ class Cart extends Table
 
         $cartItem->save();
         return true;
+    }
+
+    public function getTotal()
+    {
+        $query = "SELECT SUM(`basePrice`-(`discount`*`basePrice`/100)) as `total` FROM `cartItem` WHERE cartId='{$this->cartId}' ";
+
+        return $this->fetchRow($query)->total;
     }
 }

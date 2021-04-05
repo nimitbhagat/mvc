@@ -1,4 +1,7 @@
 <li class="nav-item active">
+    <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\configurationGroup')); ?>">Configuration</a>
+</li>
+<li class="nav-item active">
     <a class="nav-link" href="<?php echo ($this->getUrl()->getUrl('grid', 'admin\shipment')); ?>">Shipping</a>
 </li>
 <li class="nav-item active">

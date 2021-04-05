@@ -28,32 +28,23 @@ class Cart extends \Controller\Core\Admin
             }
 
             if ($cart->addItem($product, $qty, true)) {
+                $cart = $this->getCart();
+                $cart->total = $this->getCart()->getTotal();
+
+                $cart->save();
+
                 $this->getMessage()->setSuccess('Item added to cart Successfully');
-            } else {
             }
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
 
-        header("location:{$_SERVER['HTTP_REFERER']}");
-        //echo $_SERVER['HTTP_REFERER'];
+        $this->redirectToPrevious();
 
         //$this->redirect(null, null, null, true);
         //$this->redirect('grid', 'home\grid', null, true);
     }
 
-
-    public function indexAction()
-    {
-
-        $gridBlock = Mage::getBlock('Block\Admin\Cart\Grid');
-        $layout = $this->getLayout();
-        $layout->setTemplate("./core/layout/one_column.php");
-        $cart = $this->getCart();
-        $gridBlock->setCart($cart);
-        $layout->getChild("Content")->addChild($gridBlock, 'Grid');
-        $this->renderLayout();
-    }
 
     protected function getCart($customerId = NULL)
     {
@@ -125,6 +116,10 @@ class Cart extends \Controller\Core\Admin
             $item->load($id)->getData();
             if ($item) {
                 if ($item->delete()) {
+                    $cart = $this->getCart();
+                    $cart->total = $this->getCart()->getTotal();
+
+                    $cart->save();
                     $this->getMessage()->setSuccess('Record Deleted Successfully');
                 } else {
                     $this->getMessage()->setFailure('Unable To Delete Record');
@@ -136,7 +131,7 @@ class Cart extends \Controller\Core\Admin
             $this->getMessage()->setFailure($e->getMessage());
         }
 
-        header("location:{$_SERVER['HTTP_REFERER']}");
+        $this->redirectToPrevious();
 
         //$this->redirect('grid', 'home\home', null, true);
     }
@@ -154,98 +149,89 @@ class Cart extends \Controller\Core\Admin
         try {
             $shipping = $this->getRequest()->getPost('shipping');
             $billing = $this->getRequest()->getPost('billing');
-            $cartId = $this->getCart()->getItems()[0]->cartId;
+            $cartId = $this->getCart()->getItems()->getData()[0]->cartId;
+            $cart = $this->getCart();
+            $cartData = $this->getRequest()->getPost('cart');
 
             if ($billing) {
-                $query = "SELECT * FROM `cart_address` WHERE `cartId` = '{$cartId}' AND `addressType` = 'Billing'";
-                $cartBillingAddress = \Mage::getModel('Model\Cart\CartAddress')->fetchRow($query);
-
-                if (!$cartBillingAddress) {
-                    $cartBillingAddress = \Mage::getModel('Model\Cart\CartAddress');
+                $cartBillingAddress = Mage::getModel('\Model\Cart\CartAddress');
+                $query = "SELECT * FROM cartAddress where cartId={$cartId} and addressType='Billing'";
+                if (!$cartBillingAddress->fetchRow($query)) {
+                    $cartBillingAddress->setData($billing)->save();
+                } else {
+                    $cartBillingAddress->setData($billing)->save();
                 }
-
-                $cartBillingAddress->cartId = $cartId;
-                $cartBillingAddress->addressType = 'Billing';
-                $cartBillingAddress->setData($billing);
 
                 if ($this->getRequest()->getPost('billingSaveAddressBook')) {
-                    $customerId = $this->getCart()->customerId;
-                    $query = "SELECT * FROM `customer_address` WHERE `customerId`='{$customerId}' AND `addressType`='Billing'";
-                    $customer = \Mage::getModel('Model\CustomerAddress')->fetchAll($query);
-                    $customer = $customer[0];
-                    if (!$customer) {
-                        $customer = \Mage::getModel('Model\CustomerAddress');
-                    }
-                    $cartBillingAddress->addressId = $customer->id;
-                    $customer->customerId = $customerId;
-                    $customer->addresstype = 'Billing';
-                    $customer->setData($billing);
-                    $customer->save();
-                }
+                    $customer = $this->getCart()->getCustomer();
+                    $customerAddress = Mage::getModel('\Model\CustomerAddress');
 
-                if (array_key_exists('sameasbilling', $shipping)) {
-                    $cartBillingAddress->sameAsBilling = 1;
-                    $query = "SELECT * FROM `cart_address` WHERE `cartId` = '{$cartId}' AND `addressType` = 'Shipping'";
-                    $cartShippingAddress = \Mage::getModel('Model\Cart\CartAddress')->fetchRow($query);
-                    if ($cartShippingAddress) {
-                        $cartShippingAddress->delete();
+                    if ($customer->customerId) {
+                        $query = "SELECT * FROM `address` where `customerId`={$customer->customerId} and `addressType`='Billing'";
+                        if ($customerAddress->fetchRow($query)) {
+                            $customerAddress->setData($billing)->save();
+                        } else {
+                            $customerAddress->customerId = $customer->customerId;
+                            $customerAddress->AddressType = "Billing";
+                            $customerAddress->setData($billing)->save();
+                        }
                     }
-                    if ($cartBillingAddress->save()) {
-                        $this->getMessage()->setSuccess('Record Set Successfully');
-                    } else {
-                        $this->getMessage()->setFailure('Unable To Delete Record');
-                    }
-                    $this->redirect('checkout');
-                } else {
-                    $cartBillingAddress->sameAsBilling = 0;
-                }
-
-                if ($cartBillingAddress->save()) {
-
-                    $this->getMessage()->setSuccess('Record Set Successfully');
-                } else {
-                    $this->getMessage()->setFailure('Unable To Delete Record');
                 }
             }
-            if ($shipping) {
-                $query = "SELECT * FROM `cart_address` WHERE `cartId` = '{$cartId}' AND `addressType` = 'Shipping'";
-                $cartShippingAddress = \Mage::getModel('Model\Cart\CartAddress')->fetchRow($query);
 
-                if (!$cartShippingAddress) {
-                    $cartShippingAddress = \Mage::getModel('Model\Cart\CartAddress');
+            if ($shipping) {
+                if ($shipping['sameAsBilling']) {
+                    $shipping = $billing;
+                    $shipping['sameAsBilling'] = 1;
+                }
+
+                $cartBillingAddress = Mage::getModel('\Model\Cart\CartAddress');
+                $query = "SELECT * FROM cartAddress where cartId={$cartId} and addressType='Shipping'";
+
+                if (!$cartBillingAddress->fetchRow($query)) {
+                    $cartBillingAddress->setData($shipping)->save();
+                } else {
+                    $cartBillingAddress->setData($shipping)->save();
                 }
 
                 if ($this->getRequest()->getPost('shippingSaveAddressBook')) {
-                    $customerId = $this->getCart()->customerId;
-                    $query = "SELECT * FROM `customer_address` WHERE `customerId`='{$customerId}' AND `addressType`='Shipping'";
-                    $customer = \Mage::getModel('Model\CustomerAddress')->fetchAll($query);
-                    $customer = $customer[0];
-                    if (!$customer) {
-                        $customer = \Mage::getModel('Model\CustomerAddress');
+                    $customer = $this->getCart()->getCustomer();
+                    $customerAddress = Mage::getModel('\Model\CustomerAddress');
+
+                    if ($customer->customerId) {
+                        $query = "SELECT * FROM `address` where `customerId`={$customer->customerId} and `addressType`='Shipping'";
+                        if ($customerAddress->fetchRow($query)) {
+                            $customerAddress->setData($shipping);
+                            unset($customerAddress->sameAsBilling);
+                            $customerAddress->save();
+                        } else {
+                            $customerAddress->customerId = $customer->customerId;
+                            $customerAddress->AddressType = "Shipping";
+                            $customerAddress->setData($shipping)->save();
+                        }
                     }
-                    $cartShippingAddress->addressId = $customer->id;
-                    $customer->customerId = $customerId;
-                    $customer->addresstype = 'Shipping';
-                    $customer->setData($shipping);
-                    $customer->save();
+                }
+            }
+
+            if ($cartData) {
+
+                $cart->setData($cartData);
+                $query = "SELECT * FROM shipping where shippingId ={$cart->shippingMethodId}";
+
+                $shipping = Mage::getModel('\Model\Shipment')->fetchRow($query);
+
+                $cart->shippingAmount = $shipping->amount;
+
+                if (!$cart->save()) {
+                    throw new Exception("Shipping & Payment Method Saved Successfully", 1);
                 }
 
-                $cartShippingAddress->cartId = $cartId;
-                $cartShippingAddress->addressType = 'Shipping';
-                $cartShippingAddress->setData($shipping);
-                print_r($customer);
-                print_r($cartShippingAddress);
-
-                if ($cartShippingAddress->save()) {
-                    $this->getMessage()->setSuccess('Record Deleted Successfully');
-                } else {
-                    $this->getMessage()->setFailure('Unable To Delete Record');
-                }
+                $this->getMessage()->setSuccess("Shipping & Payment Method Updated Successfully");
             }
         } catch (\Exception $th) {
             $this->getMessage()->setFailure('Unable To Set Record');
         }
 
-        $this->redirect('checkout');
+        $this->redirect('checkout', 'home\home');
     }
 }

@@ -5,8 +5,11 @@
     <div class="container">
 
         <!-- /.row -->
+        <?php echo $this->createBlock('Block\Core\Layout\Home\Message')->toHtml(); ?>
         <?php echo  $this->getChild("Content")->toHtml(); ?>
         <?php echo $this->createBlock('Block\Home\Brand')->toHtml(); ?>
+
+
 
     </div>
     <!-- /.container -->
