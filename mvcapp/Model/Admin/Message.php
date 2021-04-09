@@ -5,8 +5,6 @@ namespace Model\Admin;
 use \Model\Admin\Session;
 use Mage;
 
-Mage::loadClassByFileName("Model\Admin\Session");
-
 class Message extends Session
 {
 

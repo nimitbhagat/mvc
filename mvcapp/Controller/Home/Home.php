@@ -94,4 +94,85 @@ class Home extends CoreAdmin
         $cart->save();
         return $cart;
     }
+
+    public function placeOrderAction()
+    {
+
+        try {
+            $customerId = Mage::getModel('\Model\Admin\Session')->customerId;
+
+            $customer = Mage::getModel('\Model\Customer')->load($customerId);
+
+            $cart = $this->getCart();
+
+
+            $shipping = Mage::getModel('\Model\Shipment')->load($cart->shippingMethodId);
+            $payment = Mage::getModel('\Model\Payment')->load($cart->paymentMethodId);
+
+            $query = "SELECT * FROM cartAddress where cartId={$cart->cartId}";
+            $cartAddress = Mage::getModel('\Model\Cart\CartAddress')->fetchAll($query);
+
+
+            $items = $this->getCart()->getItems();
+
+            $order = Mage::getModel('\Model\Order');
+
+            $order->setData($cart->getData());
+
+            unset($order->sessionId);
+            unset($order->cartId);
+            $order->customerFirstName = $customer->firstName;
+            $order->customerLastName = $customer->lastName;
+            $order->customerEmail = $customer->email;
+            $order->customerContact = $customer->mobile;
+            $order->shippingName = $shipping->name;
+            $order->shippingCode = $shipping->code;
+            $order->paymentName = $payment->name;
+            $order->paymentCode = $payment->code;
+            $order->createdDate = date("Y-m-d H:i:s");
+
+            if ($order = $order->save()) {
+                $orderId = $order->getAdapter()->getConnect()->insert_id;
+
+                foreach ($cartAddress->getData() as $address) {
+                    $orderAddress = Mage::getModel('\Model\Order\Address');
+                    $orderAddress->setData($address->getData());
+                    unset($orderAddress->cartId);
+                    unset($orderAddress->cartAddressId);
+                    $orderAddress->orderId = $orderId;
+
+                    if (!$orderAddress->save()) {
+                        throw new Exception("Order Failed", 1);
+                    }
+                }
+                foreach ($items->getData() as $value) {
+                    $orderItem = Mage::getModel('\Model\Order\Items');
+
+                    $orderItem->setData($value->getData());
+                    unset($orderItem->cartItemId);
+                    unset($orderItem->cartId);
+
+                    $product = Mage::getModel('\Model\Product')->load($orderItem->productId);
+
+                    $orderItem->orderDetailId = $orderId;
+                    $orderItem->productName = $product->name;
+                    $orderItem->createdDate = date("Y-m-d H:i:s");
+                    if (!$orderItem->save()) {
+                        throw new Exception("Order Failed", 1);
+                    }
+                }
+                $cart->delete();
+
+                $this->getMessage()->setSuccess("Order Placed !!");
+            } else {
+                throw new Exception("Order Failed", 1);
+            }
+        } catch (Exception $e) {
+            if (!isset($orderId)) {
+                $order->delete("DELETE FROM `orderdetails` WHERE `orderdetails`.`orderId` = {$orderId}");
+            }
+        }
+
+        $this->redirect('index', 'home\home', null, true);
+    }
 }

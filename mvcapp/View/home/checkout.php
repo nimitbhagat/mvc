@@ -22,18 +22,58 @@ if ($cartBillingAddress->sameAsBilling) {
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="panel-group checkout-steps" id="accordion">
+
                         <div class="panel panel-default checkout-step-01">
-                            <!-- panel-heading -->
                             <div class="panel-heading">
                                 <h4 class="unicase-checkout-title">
                                     <a data-toggle="collapse" class="" data-parent="#accordion" href="#collapseOne">
-                                        <span>1</span>Shipping & Billing Address
+                                        <span>1</span>Cart Summery
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <form action="<?php echo $this->getUrl()->getUrl('save', 'admin\cart'); ?>" method="POST" class="register-form" role="form">
+
+                                            <!-- guest-login -->
+                                            <div class="col-md-12 col-sm-12">
+                                                <!-- <h4 class="checkout-subtitle">Items</h4> -->
+                                                <!-- <p class="text title-tag-line">Register with us for future convenience:</p> -->
+                                                <div class="col-md-12 col-sm-12 already-registered-login right">
+                                                    <button type="submit" class="btn-upper btn btn-primary checkout-page-button checkout-continue ">Continue</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <?php foreach ($this->getShippingMethods()->getData() as $shipping) : ?>
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                            <input id="shippingMethod<?php echo $shipping->shippingId; ?>" type="radio" name="cart[shippingMethodId]" value="<?php echo $shipping->shippingId; ?>" <?php echo ($shipping->shippingId == $cart->shippingMethodId) ? "checked" : ""; ?>>
+                                                            <label class="radio-button " for="shippingMethod<?php echo $shipping->shippingId; ?>"><?php echo $shipping->name; ?></label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+                                        <!-- already-registered-login -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default checkout-step-02">
+                            <!-- panel-heading -->
+                            <div class="panel-heading">
+                                <h4 class="unicase-checkout-title">
+                                    <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseTwo">
+                                        <span>2</span>Shipping & Billing Address
                                     </a>
                                 </h4>
                             </div>
                             <!-- panel-heading -->
 
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <div id="collapseTwo" class="panel-collapse collapse ">
                                 <!-- panel-body  -->
                                 <div class="panel-body">
                                     <div class="row">
@@ -171,18 +211,16 @@ if ($cartBillingAddress->sameAsBilling) {
                             <!-- row -->
                         </div>
 
-                        <div class="panel panel-default checkout-step-02">
+                        <div class="panel panel-default checkout-step-03">
                             <div class="panel-heading">
                                 <h4 class="unicase-checkout-title">
-                                    <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseTwo">
-                                        <span>2</span>Payment & Shipping Information
+                                    <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseThree">
+                                        <span>3</span>Payment & Shipping Information
                                     </a>
                                 </h4>
                             </div>
 
-
-
-                            <div id="collapseTwo" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="row">
                                         <form action="<?php echo $this->getUrl()->getUrl('save', 'admin\cart'); ?>" method="POST" class="register-form" role="form">
@@ -229,19 +267,39 @@ if ($cartBillingAddress->sameAsBilling) {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="panel panel-default checkout-step-03">
+                            <div class="panel-heading">
+                                <h4 class="unicase-checkout-title">
+                                    <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#collapseFour">
+                                        <span>4</span>Place Order
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <!-- already-registered-login -->
+                                        <div class="col-md-6 col-sm-6 already-registered-login">
+                                            <h4 class="checkout-subtitle">Place Oredr</h4>
+                                            <!-- <p class="text title-tag-line">Please log in below:</p> -->
+
+                                            <div class="form-group">
+                                                <div class="col-md-12 col-sm-12 ">
+                                                    <a href="<?php echo $this->getUrl()->getUrl('placeOrder', 'home\home'); ?>" class="btn-upper btn btn-primary checkout-page-button checkout-continue">Place Order</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.checkout-steps -->
                 </div>
-
-
-
-
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.checkout-box -->
     </div>
-    <!-- /.container -->
 </div>
 
 

@@ -33,8 +33,6 @@
                                </li>
                            <?php endforeach; ?>
                        <?php endif; ?>
-
-
                        <li>
                            <div class="clearfix"></div>
                            <!-- /.cart-total-->

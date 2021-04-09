@@ -19,8 +19,6 @@ class Configuration extends CoreAdmin
 
     public function saveAction()
     {
-
-
         try {
             if (!$this->getRequest()->isPost()) {
                 throw new Exception("Invalid Post Request", 1);
@@ -41,7 +39,6 @@ class Configuration extends CoreAdmin
             }
 
             if (array_key_exists('new', $data)) {
-                echo "<pre>";
                 array_map(function ($title, $code, $value) {
                     if (($title != null && $title != "") && ($title != null && $title != "") && ($value != null && $value != "")) {
                         $configuration = Mage::getModel("Model\ConfigurationGroup\Configuration");
@@ -52,23 +49,6 @@ class Configuration extends CoreAdmin
                         $configuration->save();
                     }
                 }, $data['new']['title'], $data['new']['code'], $data['new']['value']);
-
-                foreach ($data['new'] as $key => $value) {
-
-
-                    /*
-                    if ($name) {
-                        $configuration = Mage::getModel("Model\Attribute\Option");
-                        $configuration->groupId  = $groupId;
-                        $configuration->title = "$name";
-                        $configuration->code = "$sortOrder";
-                        $configuration->value = "$sortOrder";
-                        if ($configuration->save()) {
-                            $this->getMessage()->setSuccess("Option Updated SuccessFully !!");
-                        }
-                    }
-                    */
-                }
             }
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());

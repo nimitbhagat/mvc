@@ -157,7 +157,7 @@ class Cart extends \Controller\Core\Admin
                 $cartBillingAddress = Mage::getModel('\Model\Cart\CartAddress');
                 $query = "SELECT * FROM cartAddress where cartId={$cartId} and addressType='Billing'";
                 if (!$cartBillingAddress->fetchRow($query)) {
-                    $cartBillingAddress->setData($billing)->save();
+                    $cartBillingAddress->setData($billing)->save(); 
                 } else {
                     $cartBillingAddress->setData($billing)->save();
                 }
